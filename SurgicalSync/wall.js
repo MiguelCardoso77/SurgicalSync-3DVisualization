@@ -7,13 +7,15 @@ import * as THREE from "three";
  */
 
 export default class Wall {
-    constructor(parameters) {
-        for (const [key, value] of Object.entries(parameters)) {
-            this[key] = value;
-        }
+    textureUrl;
 
+    constructor(parameters) {
+        // Initialize parameters
+        this.textureUrl = parameters.textureUrl;
+
+        // Define wall dimensions
         const width = 1.055;
-        const height = 1.0;
+        const height = 2.0;
         const depth = 0.1;
 
         // Create a texture
@@ -24,14 +26,12 @@ export default class Wall {
             texture.minFilter = THREE.LinearMipmapLinearFilter;
         });
 
-        // Create a wall (seven faces) that casts and receives shadows
-
         // Create a group of objects
         this.object = new THREE.Group();
 
         // Create the front face (a rectangle)
         let geometry = new THREE.PlaneGeometry(width - 0.05, height);
-        let material = new THREE.MeshPhongMaterial({ color: 0xffffff, map: texture });
+        let material = new THREE.MeshPhongMaterial({color: 0xffffff, map: texture});
         let face = new THREE.Mesh(geometry, material);
         face.position.set(0.0, 0.0, depth / 2);
         face.castShadow = true;
@@ -76,7 +76,7 @@ export default class Wall {
         geometry = new THREE.BufferGeometry().setAttribute("position", new THREE.BufferAttribute(points, 3)); // itemSize = 3 because there are 3 values (X, Y and Z components) per vertex
         geometry.setAttribute("normal", new THREE.BufferAttribute(normals, 3));
         geometry.setIndex(indices);
-        material = new THREE.MeshPhongMaterial({ color: 0x6b554b });
+        material = new THREE.MeshPhongMaterial({color: 0x6b554b});
         face = new THREE.Mesh(geometry, material);
         face.castShadow = true;
         face.receiveShadow = true;
