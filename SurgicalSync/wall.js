@@ -2,7 +2,8 @@ import * as THREE from "three";
 
 /*
  * parameters = {
- *  textureUrl: String
+ *  textureUrl: String,
+ *  doorObject: THREE.Object3D // porta já criada para adicionar na parede
  * }
  */
 
@@ -12,10 +13,11 @@ export default class Wall {
     constructor(parameters) {
         // Initialize parameters
         this.textureUrl = parameters.textureUrl;
+        this.doorObject = parameters.doorObject;
 
         // Define wall dimensions
         const width = 1.055;
-        const height = 2.0;
+        const height = 2.0; // Altura da parede é 2.0
         const depth = 0.1;
 
         // Create a texture
@@ -31,7 +33,7 @@ export default class Wall {
 
         // Create the front face (a rectangle)
         let geometry = new THREE.PlaneGeometry(width - 0.05, height);
-        let material = new THREE.MeshPhongMaterial({color: 0xffffff, map: texture});
+        let material = new THREE.MeshPhongMaterial({ color: 0xffffff, map: texture });
         let face = new THREE.Mesh(geometry, material);
         face.position.set(0.0, 0.0, depth / 2);
         face.castShadow = true;
@@ -73,10 +75,10 @@ export default class Wall {
             4, 5, 6,
             6, 7, 4
         ];
-        geometry = new THREE.BufferGeometry().setAttribute("position", new THREE.BufferAttribute(points, 3)); // itemSize = 3 because there are 3 values (X, Y and Z components) per vertex
+        geometry = new THREE.BufferGeometry().setAttribute("position", new THREE.BufferAttribute(points, 3));
         geometry.setAttribute("normal", new THREE.BufferAttribute(normals, 3));
         geometry.setIndex(indices);
-        material = new THREE.MeshPhongMaterial({color: 0x6b554b});
+        material = new THREE.MeshPhongMaterial({ color: 0x6b554b });
         face = new THREE.Mesh(geometry, material);
         face.castShadow = true;
         face.receiveShadow = true;
@@ -110,12 +112,34 @@ export default class Wall {
             3, 4, 2,
             4, 3, 5
         ];
-        geometry = new THREE.BufferGeometry().setAttribute("position", new THREE.BufferAttribute(points, 3)); // itemSize = 3 because there are 3 values (X, Y and Z components) per vertex
+        geometry = new THREE.BufferGeometry().setAttribute("position", new THREE.BufferAttribute(points, 3));
         geometry.setAttribute("normal", new THREE.BufferAttribute(normals, 3));
         geometry.setIndex(indices);
         face = new THREE.Mesh(geometry, material);
         face.castShadow = true;
         face.receiveShadow = true;
         this.object.add(face);
+    }
+
+    // Add door function to position door to fill the full height of the wall
+    addDoor(i, j, description) {
+        const doorObject = this.doorObject.clone();
+
+        // Definir a escala da porta para que ocupe a altura completa da parede
+        const wallHeight = 2.0;  // altura total da parede
+        const originalDoorHeight = description.size.height; // Altura original da porta
+        const scaleRatio = wallHeight / originalDoorHeight; // Proporção necessária para ajustar à altura da parede
+
+        // Ajustar a escala da porta para ocupar a altura total da parede
+        doorObject.scale.set(scaleRatio, scaleRatio, 1);  // Escalando proporcionalmente
+
+        // Posicionar a porta no centro da parede
+        doorObject.position.set(
+            i - description.size.width / 2.0 + 1,
+            0,  // Centralizar verticalmente na parede
+            j - description.size.height / 4.0
+        );
+
+        this.object.add(doorObject);
     }
 }

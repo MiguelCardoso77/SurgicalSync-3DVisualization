@@ -1,7 +1,7 @@
 {
-    "doorTextureUrl": "./textures/Door.jpg",
+    "doorTextureUrl": "./textures/tentativa1.jpg",
     "groundTextureUrl": "./textures/whiteFloor.jpg",
-    "wallTextureUrl": "./textures/Wall.jpg",
+    "wallTextureUrl": "./textures/paredeAzulAzulejo.jpg",
     "size": { "width": 10, "height": 10 },
     "map": [
         [3, 2, 2, 3, 2, 2, 2, 3, 2, 2, 1],
