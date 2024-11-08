@@ -11,6 +11,12 @@ import Wall from "./wall.js";
  */
 
 export default class Maze {
+    doorTextureUrl;
+    groundTextureUrl;
+    wallTextureUrl;
+    url;
+    scale;
+
     constructor(parameters) {
         this.onLoad = function (description) {
             // Store the maze's map and size
@@ -31,13 +37,16 @@ export default class Maze {
             this.ground = new Ground({ textureUrl: description.groundTextureUrl, size: description.size });
             this.object.add(this.ground.object);
 
-            // Create a wall
+            // Create a wall and a door
             this.wall = new Wall({ textureUrl: description.wallTextureUrl });
+            this.door = new Wall({ textureUrl: description.doorTextureUrl });
+            console.log("Door Texture URL:", description.doorTextureUrl);
 
             // Build the maze
+            let doorObject;
             let wallObject;
-            for (let i = 0; i <= description.size.width; i++) { // In order to represent the eastmost walls, the map width is one column greater than the actual maze width
-                for (let j = 0; j <= description.size.height; j++) { // In order to represent the southmost walls, the map height is one row greater than the actual maze height
+            for (let i = 0; i <= description.size.width; i++) { // Map width includes extra column for eastmost walls
+                for (let j = 0; j <= description.size.height; j++) { // Map height includes extra row for southmost walls
                     /*
                      * description.map[][] | North wall | West wall
                      * --------------------+------------+-----------
@@ -46,11 +55,18 @@ export default class Maze {
                      *          2          |    Yes     |     No
                      *          3          |    Yes     |    Yes
                      */
+                    if (description.map[j][i] === 7) {
+                        doorObject = this.door.object.clone();
+                        doorObject.position.set(i - description.size.width / 2.0 + 0.5, 0.5, j - description.size.height / 2.0);
+                        this.object.add(doorObject);
+                    }
+
                     if (description.map[j][i] === 2 || description.map[j][i] === 3) {
                         wallObject = this.wall.object.clone();
                         wallObject.position.set(i - description.size.width / 2.0 + 0.5, 0.5, j - description.size.height / 2.0);
                         this.object.add(wallObject);
                     }
+
                     if (description.map[j][i] === 1 || description.map[j][i] === 3) {
                         wallObject = this.wall.object.clone();
                         wallObject.rotateY(Math.PI / 2.0);
