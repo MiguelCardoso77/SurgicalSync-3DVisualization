@@ -1,0 +1,11 @@
+Model Information:
+* title:	cloths
+* source:	https://sketchfab.com/3d-models/cloths-815ccf1a7fc046b2a3ca9ca8c7b2983f
+* author:	salman_ali (https://sketchfab.com/salman_ali)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "cloths" (https://sketchfab.com/3d-models/cloths-815ccf1a7fc046b2a3ca9ca8c7b2983f) by salman_ali (https://sketchfab.com/salman_ali) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

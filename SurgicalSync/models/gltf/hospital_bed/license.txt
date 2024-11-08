@@ -1,0 +1,11 @@
+Model Information:
+* title:	Hospital bed
+* source:	https://sketchfab.com/3d-models/hospital-bed-41cd18dbfcd04efca9d6e861e3cc7663
+* author:	Capitaine_Vava (https://sketchfab.com/Capitaine_Vava)
+
+Model License:
+* license type:	CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)
+* requirements:	Author must be credited. No commercial use.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Hospital bed" (https://sketchfab.com/3d-models/hospital-bed-41cd18dbfcd04efca9d6e861e3cc7663) by Capitaine_Vava (https://sketchfab.com/Capitaine_Vava) licensed under CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)
