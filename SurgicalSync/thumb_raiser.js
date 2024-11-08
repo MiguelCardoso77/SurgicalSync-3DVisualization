@@ -13,7 +13,8 @@
 import * as THREE from "three";
 import Stats from "three/addons/libs/stats.module.js";
 import Orientation from "./orientation.js";
-import { generalData, mazeData, playerData, lightsData, fogData, cameraData } from "./default_data.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { generalData, mazeData, playerData, lightsData, fogData, cameraData, hospitalBedData } from "./default_data.js";
 import { merge } from "./merge.js";
 import Maze from "./maze.js";
 import Player from "./player.js";
@@ -161,6 +162,25 @@ export default class ThumbRaiser {
         this.thirdPersonViewCameraParameters = merge({}, cameraData, thirdPersonViewCameraParameters);
         this.topViewCameraParameters = merge({}, cameraData, topViewCameraParameters);
         this.miniMapCameraParameters = merge({}, cameraData, miniMapCameraParameters);
+
+        const loader = new GLTFLoader();
+        loader.load(
+            hospitalBedData.url,
+            (gltf) => {
+                this.hospitalBed = gltf.scene; // Assuming the model's scene is inside gltf.scene
+
+                // Optionally, scale or position the model
+                this.hospitalBed.scale.set(0.01, 0.01, 0.01); // Adjust scale as needed
+                this.hospitalBed.position.set(0, 0, 0);  // Adjust position as needed
+
+                // Add the hospital bed to the scene
+                this.scene3D.add(this.hospitalBed);
+            },
+            undefined, // Optional: progress callback
+            (error) => {
+                console.error('An error occurred while loading the model:', error);
+            }
+        );
 
         // Create a 2D scene (the viewports frames)
         this.scene2D = new THREE.Scene();
