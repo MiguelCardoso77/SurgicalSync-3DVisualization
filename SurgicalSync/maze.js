@@ -42,7 +42,6 @@ export default class Maze {
             this.wall = new Wall({ textureUrl: description.wallTextureUrl });
             this.doorR = new Wall({ textureUrl: description.doorRightTextureUrl });
             this.doorL = new Wall({ textureUrl: description.doorLeftTextureUrl });
-            console.log("Door Texture URL:", description.doorTextureUrl);
 
             // Build the maze
             let doorObject;
