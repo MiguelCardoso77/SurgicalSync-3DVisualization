@@ -164,23 +164,32 @@ export default class ThumbRaiser {
         this.miniMapCameraParameters = merge({}, cameraData, miniMapCameraParameters);
 
         const loader = new GLTFLoader();
-        loader.load(
-            hospitalBedData.url,
-            (gltf) => {
-                this.hospitalBed = gltf.scene; // Assuming the model's scene is inside gltf.scene
+        const positions = [
+            [-4.25, 0.3, 4],
+            [-1.25, 0.3, 4],
+            [2.80, 0.3, 4],
+            [-4.25, 0.3, -4],
+            [-1.25, 0.3, -4],
+            [2.80, 0.3, -4]
+        ];
 
-                // Optionally, scale or position the model
-                this.hospitalBed.scale.set(0.01, 0.01, 0.01); // Adjust scale as needed
-                this.hospitalBed.position.set(0, 0, 0);  // Adjust position as needed
+        positions.forEach(position => {
+            loader.load(
+                hospitalBedData.url,
+                (gltf) => {
+                    const hospitalBed = gltf.scene;
 
-                // Add the hospital bed to the scene
-                this.scene3D.add(this.hospitalBed);
-            },
-            undefined, // Optional: progress callback
-            (error) => {
-                console.error('An error occurred while loading the model:', error);
-            }
-        );
+                    hospitalBed.scale.set(0.02, 0.02, 0.02);
+                    hospitalBed.position.set(...position);
+
+                    this.scene3D.add(hospitalBed);
+                },
+                undefined,
+                (error) => {
+                    console.error('An error occurred while loading the model:', error);
+                }
+            );
+        });
 
         // Create a 2D scene (the viewports frames)
         this.scene2D = new THREE.Scene();

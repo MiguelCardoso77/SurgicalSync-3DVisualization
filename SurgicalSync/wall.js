@@ -17,7 +17,7 @@ export default class Wall {
 
         // Define wall dimensions
         const width = 1.055;
-        const height = 2.0; // Altura da parede é 2.0
+        const height = 2.5;
         const depth = 0.1;
 
         // Create a texture

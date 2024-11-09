@@ -11,7 +11,8 @@ import Wall from "./wall.js";
  */
 
 export default class Maze {
-    doorTextureUrl;
+    doorRightTextureUrl;
+    doorLeftTextureUrl;
     groundTextureUrl;
     wallTextureUrl;
     url;
@@ -39,7 +40,8 @@ export default class Maze {
 
             // Create a wall and a door
             this.wall = new Wall({ textureUrl: description.wallTextureUrl });
-            this.door = new Wall({ textureUrl: description.doorTextureUrl });
+            this.doorR = new Wall({ textureUrl: description.doorRightTextureUrl });
+            this.doorL = new Wall({ textureUrl: description.doorLeftTextureUrl });
             console.log("Door Texture URL:", description.doorTextureUrl);
 
             // Build the maze
@@ -56,7 +58,13 @@ export default class Maze {
                      *          3          |    Yes     |    Yes
                      */
                     if (description.map[j][i] === 7) {
-                        doorObject = this.door.object.clone();
+                        doorObject = this.doorR.object.clone();
+                        doorObject.position.set(i - description.size.width / 2.0 + 0.5, 0.5, j - description.size.height / 2.0);
+                        this.object.add(doorObject);
+                    }
+
+                    if (description.map[j][i] === 8) {
+                        doorObject = this.doorL.object.clone();
                         doorObject.position.set(i - description.size.width / 2.0 + 0.5, 0.5, j - description.size.height / 2.0);
                         this.object.add(doorObject);
                     }
