@@ -6,8 +6,8 @@ export const generalData = {
 }
 
 export const mazeData = {
-    url: "./mazes/Loquitas.json",
-    credits: "Maze designed by Cecília Fernandes and Nikita.",
+    url: "./mazes/SurgicalFloor.json",
+    credits: "Surgical Sync Hospital Floor.",
     scale: new THREE.Vector3(1.0, 1.0, 1.0)
 }
 
@@ -25,10 +25,12 @@ export const playerData = {
 
 export const hospitalBedData = {
     url: "./models/gltf/hospital_bed/hospital_bed.glb",
+    credits: "This work is based on \"Hospital bed\" (https://sketchfab.com/3d-models/hospital-bed-41cd18dbfcd04efca9d6e861e3cc7663) by Capitaine_Vava (https://sketchfab.com/Capitaine_Vava) licensed under CC-BY-NC-4.0 (https://creativecommons.org/licenses/by-nc/4.0/)"
 }
 
 export const humanBodyData = {
     url: "./models/gltf/human_body/human_body.glb",
+    credits: "This work is based on \"HUMAN_BODY\" (https://sketchfab.com/3d-models/human-body-f022e4a3641943328b2fbfdf0f7c3e1e) by vistaalienprime (https://sketchfab.com/vistaalienprime5665288) licensed under CC-BY-4.0 (https://creativecommons.org/licenses/by/4.0/)"
 }
 
 export const lightsData = {
