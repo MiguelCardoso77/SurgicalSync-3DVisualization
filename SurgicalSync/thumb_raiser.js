@@ -14,7 +14,16 @@ import * as THREE from "three";
 import Stats from "three/addons/libs/stats.module.js";
 import Orientation from "./orientation.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { generalData, mazeData, playerData, lightsData, fogData, cameraData, hospitalBedData } from "./default_data.js";
+import {
+    generalData,
+    mazeData,
+    playerData,
+    lightsData,
+    fogData,
+    cameraData,
+    hospitalBedData,
+    humanBodyData
+} from "./default_data.js";
 import { merge } from "./merge.js";
 import Maze from "./maze.js";
 import Player from "./player.js";
@@ -164,7 +173,8 @@ export default class ThumbRaiser {
         this.miniMapCameraParameters = merge({}, cameraData, miniMapCameraParameters);
 
         const loader = new GLTFLoader();
-        const positions = [
+
+        const bedPositions = [
             [-4.25, 0.3, 4],
             [-1.25, 0.3, 4],
             [2.80, 0.3, 4],
@@ -172,8 +182,7 @@ export default class ThumbRaiser {
             [-1.25, 0.3, -4],
             [2.80, 0.3, -4]
         ];
-
-        positions.forEach(position => {
+        bedPositions.forEach(position => {
             loader.load(
                 hospitalBedData.url,
                 (gltf) => {
@@ -189,6 +198,38 @@ export default class ThumbRaiser {
                     console.error('An error occurred while loading the model:', error);
                 }
             );
+        });
+
+        const roomIsOpen = [true, false, true, false, true, false];
+        const bodyPositions = [
+            [-3.75, 0.5, 4],
+            [-0.70, 0.5, 4],
+            [3.35, 0.5, 4],
+            [-3.75, 0.5, -4],
+            [-0.70, 0.5, -4],
+            [3.35, 0.5, -4]
+        ];
+
+        bodyPositions.forEach((position, index) => {
+            if (!roomIsOpen[index]) {
+                loader.load(
+                    humanBodyData.url,
+                    (gltf) => {
+                        const humanBody = gltf.scene;
+
+                        humanBody.scale.set(0.25, 0.25, 0.25);
+                        humanBody.position.set(...position);
+                        humanBody.rotation.x = -Math.PI / 2;
+                        humanBody.rotation.z = Math.PI / 2;
+
+                        this.scene3D.add(humanBody);
+                    },
+                    undefined,
+                    (error) => {
+                        console.error('An error occurred while loading the model:', error);
+                    }
+                );
+            }
         });
 
         // Create a 2D scene (the viewports frames)
@@ -240,7 +281,7 @@ export default class ThumbRaiser {
         }
         this.renderer.autoClear = false;
         this.renderer.shadowMap.enabled = true;
-        this.renderer.shadowMap.type = THREE.PCFShadowMap;
+        this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(this.renderer.domElement);
 

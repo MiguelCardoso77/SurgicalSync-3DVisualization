@@ -27,6 +27,10 @@ export const hospitalBedData = {
     url: "./models/gltf/hospital_bed/hospital_bed.glb",
 }
 
+export const humanBodyData = {
+    url: "./models/gltf/human_body/human_body.glb",
+}
+
 export const lightsData = {
     ambientLight: { color: 0xffffff, intensity: 1.0 },
     pointLight1: { color: 0xffffff, intensity: 1.0, distance: 0.0, position: new THREE.Vector3(0.0, 0.0, 0.0) },
