@@ -32,6 +32,7 @@ import Fog from "./fog.js";
 import Camera from "./camera.js";
 import Animations from "./animations.js";
 import UserInterface from "./user_interface.js";
+import BackEndConnection from "./backEndConnection.js";
 
 /*
  * generalParameters = {
@@ -200,36 +201,40 @@ export default class ThumbRaiser {
             );
         });
 
-        const roomIsOpen = [true, false, true, false, true, false];
-        const bodyPositions = [
-            [-3.75, 0.5, 4],
-            [-0.70, 0.5, 4],
-            [3.35, 0.5, 4],
-            [-3.75, 0.5, -4],
-            [-0.70, 0.5, -4],
-            [3.35, 0.5, -4]
-        ];
+        const api = new BackEndConnection();
+        api.checkSurgeryRoomsStatus().then((status) => {
+            const roomIsOpen = status.map(room => room.currentStatus);
 
-        bodyPositions.forEach((position, index) => {
-            if (!roomIsOpen[index]) {
-                loader.load(
-                    humanBodyData.url,
-                    (gltf) => {
-                        const humanBody = gltf.scene;
+            const bodyPositions = [
+                [-3.75, 0.5, 4],
+                [-0.70, 0.5, 4],
+                [3.35, 0.5, 4],
+                [-3.75, 0.5, -4],
+                [-0.70, 0.5, -4],
+                [3.35, 0.5, -4]
+            ];
 
-                        humanBody.scale.set(0.25, 0.25, 0.25);
-                        humanBody.position.set(...position);
-                        humanBody.rotation.x = -Math.PI / 2;
-                        humanBody.rotation.z = Math.PI / 2;
+            bodyPositions.forEach((position, index) => {
+                if (!roomIsOpen[index]) {
+                    loader.load(
+                        humanBodyData.url,
+                        (gltf) => {
+                            const humanBody = gltf.scene;
 
-                        this.scene3D.add(humanBody);
-                    },
-                    undefined,
-                    (error) => {
-                        console.error('An error occurred while loading the model:', error);
-                    }
-                );
-            }
+                            humanBody.scale.set(0.25, 0.25, 0.25);
+                            humanBody.position.set(...position);
+                            humanBody.rotation.x = -Math.PI / 2;
+                            humanBody.rotation.z = Math.PI / 2;
+
+                            this.scene3D.add(humanBody);
+                        },
+                        undefined,
+                        (error) => {
+                            console.error('An error occurred while loading the model:', error);
+                        }
+                    );
+                }
+            });
         });
 
         // Create a 2D scene (the viewports frames)
