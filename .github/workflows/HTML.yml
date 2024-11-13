@@ -7,6 +7,6 @@ jobs:
       - name: HTML Preview
         uses: pavi2410/html-preview-action@v4
         with:
-          html_file: SurgicalSync/Thumb_Raiser.html
+          html_file: SurgicalSync/index.html
           job_summary: true
               
