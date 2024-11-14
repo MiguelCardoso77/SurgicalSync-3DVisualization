@@ -36,7 +36,7 @@ export default class Lights {
         this.object.add(this.object.pointLight1);
 
         // Create the second point light and turn on shadows for this light
-        this.object.pointLight2 = new THREE.PointLight(0xADD8E6, this.pointLight2.intensity, this.pointLight2.distance);
+        this.object.pointLight2 = new THREE.PointLight(0xDCDCDC, this.pointLight2.intensity, this.pointLight2.distance);
         this.object.pointLight2.position.set(this.pointLight2.position.x, this.pointLight2.position.y, this.pointLight2.position.z);
         this.object.pointLight2.castShadow = true;
 
