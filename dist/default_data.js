@@ -33,6 +33,27 @@ export const humanBodyData = {
     credits: "This work is based on \"HUMAN_BODY\" (https://sketchfab.com/3d-models/human-body-f022e4a3641943328b2fbfdf0f7c3e1e) by vistaalienprime (https://sketchfab.com/vistaalienprime5665288) licensed under CC-BY-4.0 (https://creativecommons.org/licenses/by/4.0/)"
 }
 
+export const curtainData = {
+    url: "./models/gltf/curtains/curtains.glb",
+    credits: "This work is based on \"curtains\" (https://sketchfab.com/3d-models/curtains-233b2736b19b4d51a1be26c217ec3a95) by ThreeDeeCreation (https://sketchfab.com/ThreeDeeCreation) licensed under CC-BY-4.0 (https://creativecommons.org/licenses/by/4.0/)\""
+};
+
+export const dripStand = {
+    url: "./models/gltf/drip_stand/drip_stand.glb",
+    credits: "This work is based on \"Drip stand\" (https://sketchfab.com/3d-models/drip-stand-8405f7c926e242bb8078c9a37f6cebfe) by sousinho (https://sketchfab.com/sousinho)  licensed under CC-BY-4.0 (https://creativecommons.org/licenses/by/4.0/)"
+}
+
+export const ultrasound_machine = {
+    url: "./models/gltf/ultrasound_machine/ultrasound_machine.glb",
+    credits: "This work is based on \"ultrasound machine\" (https://sketchfab.com/3d-models/ultrasound-machine-0d4593f431f94de9a94815ec2c7715e9) by Liuuzaki (https://sketchfab.com/liuuzaki)  licensed under CC-BY-4.0 (https://creativecommons.org/licenses/by/4.0/)"
+}
+
+export const surgical_table = {
+    url: "./models/gltf/surgical__instrument_table_collection/surgical__instrument_table_collection.glb",
+    credits: "This work is based on \"ultrasound machine\" (https://sketchfab.com/3d-models/surgical-instrument-table-collection-a1fcfeab1ad646638089655e8b6f0e2b) by Liuuzaki (https://sketchfab.com/liuuzaki)  licensed under CC-BY-4.0 (https://creativecommons.org/licenses/by/4.0/)"
+}
+
+
 export const lightsData = {
     ambientLight: { color: 0xffffff, intensity: 1.0 },
     pointLight1: { color: 0xffffff, intensity: 1.0, distance: 0.0, position: new THREE.Vector3(0.0, 0.0, 0.0) },

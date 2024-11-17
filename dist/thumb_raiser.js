@@ -22,7 +22,11 @@ import {
     fogData,
     cameraData,
     hospitalBedData,
-    humanBodyData
+    humanBodyData,
+    curtainData,
+    dripStand,
+    ultrasound_machine,
+    surgical_table
 } from "./default_data.js";
 import { merge } from "./merge.js";
 import Maze from "./maze.js";
@@ -175,6 +179,7 @@ export default class ThumbRaiser {
 
         const loader = new GLTFLoader();
 
+
         const bedPositions = [
             [-4.25, 0.3, 4],
             [-1.25, 0.3, 4],
@@ -183,6 +188,8 @@ export default class ThumbRaiser {
             [-1.25, 0.3, -4],
             [2.80, 0.3, -4]
         ];
+
+
         bedPositions.forEach(position => {
             loader.load(
                 hospitalBedData.url,
@@ -200,6 +207,67 @@ export default class ThumbRaiser {
                 }
             );
         });
+
+
+        const curtainsPositions = [
+            [-4.85, 0.2, 4.7],
+            [-1.75, 0.2, 4.7],
+            [2.00, 0.2, 4.7],
+            [-4.85, 0.2, -3.3],
+            [-1.75, 0.2, -3.3],
+            [2.00, 0.2, -3.3]
+        ];
+
+
+        curtainsPositions.forEach(position => {
+            loader.load(
+                curtainData.url,
+                (gltf) => {
+                    const curtains = gltf.scene;
+
+                    curtains.scale.set(0.002, 0.002, 0.002);
+                    curtains.position.set(...position);
+
+                    curtains.rotation.y = Math.PI  / 2;
+
+                    this.scene3D.add(curtains);
+                },
+                undefined,
+                (error) => {
+                    console.error('An error occurred while loading the model:', error);
+                }
+            );
+        });
+
+
+        const dripStandPositions = [
+            [-4.55, 0.0, 3.5],
+            [-1.45, 0.0, 3.5],
+            [2.30, 0.0, 3.5],
+            [-4.55, 0.0, -4.5],
+            [-1.45, 0.0, -4.5],
+            [2.30, 0.0, -4.5]
+        ];
+
+
+        dripStandPositions.forEach(position => {
+            loader.load(
+                dripStand.url,
+                (gltf) => {
+                    const dripStand = gltf.scene;
+
+                    dripStand.scale.set(0.004, 0.004, 0.004);
+                    dripStand.position.set(...position);
+
+                    this.scene3D.add(dripStand);
+                },
+                undefined,
+                (error) => {
+                    console.error('An error occurred while loading the model:', error);
+                }
+            );
+        });
+
 
         const api = new BackEndConnection();
         api.checkSurgeryRoomsStatus().then((status) => {
@@ -235,6 +303,67 @@ export default class ThumbRaiser {
                     );
                 }
             });
+        });
+
+
+        const ultrasound_machinePositions = [
+            [-2.70, 0.0, 3.5],
+            [0.8, 0.0, 3.5],
+            [4.2, 0.0, 3.5],
+            [-2.70, 0.0, -4.5],
+            [0.8, 0.0, -4.5],
+            [4.2, 0.0, -4.5]
+        ];
+
+        ultrasound_machinePositions.forEach(position => {
+            loader.load(
+                ultrasound_machine.url,
+                (gltf) => {
+                    const ultrasound_machine = gltf.scene;
+
+                    ultrasound_machine.scale.set(0.7,0.7, 0.7);
+                    ultrasound_machine.position.set(...position);
+
+                    ultrasound_machine.rotation.y = Math.PI * 3 /  2 ;
+
+                    this.scene3D.add(ultrasound_machine);
+                },
+                undefined,
+                (error) => {
+                    console.error('An error occurred while loading the model:', error);
+                }
+            );
+        });
+
+
+        const surgicalTablePositions = [
+            [-2.70, 0.0, 2.0],
+            [0.8, 0.0, 2.0],
+            [4.2, 0.0, 2.0],
+            [-2.70, 0.0, -2.0],
+            [0.8, 0.0, -2.0],
+            [4.2, 0.0, -2.0]
+        ];
+
+        surgicalTablePositions.forEach(position => {
+            loader.load(
+                surgical_table.url,
+                (gltf) => {
+                    const surgical_table = gltf.scene;
+
+                    surgical_table.scale.set(0.5, 0.5, 0.5);
+                    surgical_table.position.set(...position);
+
+                    surgical_table.rotation.y = Math.PI /  2 ;
+
+
+                    this.scene3D.add(surgical_table);
+                },
+                undefined,
+                (error) => {
+                    console.error('An error occurred while loading the model:', error);
+                }
+            );
         });
 
         // Create a 2D scene (the viewports frames)
