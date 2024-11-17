@@ -225,7 +225,7 @@ export default class ThumbRaiser {
                 (gltf) => {
                     const curtains = gltf.scene;
 
-                    curtains.scale.set(0.002, 0.002, 0.002);
+                    curtains.scale.set(0.002, 0.0011, 0.002);
                     curtains.position.set(...position);
 
                     curtains.rotation.y = Math.PI  / 2;
@@ -256,7 +256,7 @@ export default class ThumbRaiser {
                 (gltf) => {
                     const dripStand = gltf.scene;
 
-                    dripStand.scale.set(0.004, 0.004, 0.004);
+                    dripStand.scale.set(0.004, 0.003, 0.004);
                     dripStand.position.set(...position);
 
                     this.scene3D.add(dripStand);
@@ -321,7 +321,7 @@ export default class ThumbRaiser {
                 (gltf) => {
                     const ultrasound_machine = gltf.scene;
 
-                    ultrasound_machine.scale.set(0.7,0.7, 0.7);
+                    ultrasound_machine.scale.set(0.7,0.45, 0.7);
                     ultrasound_machine.position.set(...position);
 
                     ultrasound_machine.rotation.y = Math.PI * 3 /  2 ;
@@ -336,7 +336,7 @@ export default class ThumbRaiser {
         });
 
 
-        const surgicalTablePositions = [
+        /*const surgicalTablePositions = [
             [-2.70, 0.0, 2.0],
             [0.8, 0.0, 2.0],
             [4.2, 0.0, 2.0],
@@ -364,7 +364,7 @@ export default class ThumbRaiser {
                     console.error('An error occurred while loading the model:', error);
                 }
             );
-        });
+        });*/
 
         // Create a 2D scene (the viewports frames)
         this.scene2D = new THREE.Scene();
