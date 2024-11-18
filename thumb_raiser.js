@@ -24,6 +24,7 @@ import {
     hospitalBedData,
     humanBodyData,
     curtainData,
+    doctorData
 } from "./default_data.js";
 import {merge} from "./merge.js";
 import Maze from "./maze.js";
@@ -270,6 +271,39 @@ export default class ThumbRaiser {
                     );
                 }
             });
+        });
+
+        const doctorPositions = [
+            [-3.70, 0, 3.3],
+            [-0.7, 0, 3.3],
+            [2.9, 0, 3.3],
+            [-3.70, 0, -3.3],
+            [-0.7, 0, -3.3],
+            [2.9, 0, -3.3]
+        ];
+
+        doctorPositions.forEach((position, index) => {
+            loader.load(
+                doctorData.url,
+                (gltf) => {
+                    const doctor = gltf.scene;
+
+                    doctor.scale.set(0.005, 0.005, 0.005);
+                    doctor.position.set(...position);
+
+                    if (index < 3) {
+                        doctor.rotation.y = Math.PI * 2 ;
+                    } else {
+                        doctor.rotation.y = Math.PI ;
+                    }
+
+                    this.scene3D.add(doctor);
+                },
+                undefined,
+                (error) => {
+                    console.error('An error occurred while loading the model:', error);
+                }
+            );
         });
 
         // Create a 2D scene (the viewports frames)
