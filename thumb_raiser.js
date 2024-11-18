@@ -24,9 +24,6 @@ import {
     hospitalBedData,
     humanBodyData,
     curtainData,
-    dripStand,
-    ultrasound_machine,
-    surgical_table
 } from "./default_data.js";
 import { merge } from "./merge.js";
 import Maze from "./maze.js";
