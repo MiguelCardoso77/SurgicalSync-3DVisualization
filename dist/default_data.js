@@ -38,11 +38,6 @@ export const curtainData = {
     credits: "This work is based on \"curtains\" (https://sketchfab.com/3d-models/curtains-233b2736b19b4d51a1be26c217ec3a95) by ThreeDeeCreation (https://sketchfab.com/ThreeDeeCreation) licensed under CC-BY-4.0 (https://creativecommons.org/licenses/by/4.0/)\""
 };
 
-export const doctorData = {
-    url: "./models/gltf/doctor/doctor.glb",
-    credits: "This work is based on \"doctor\" (https://sketchfab.com/3d-models/doctor-31c09ab8b098489b8c46712650e45bac) by Box Games (https://sketchfab.com/Box_Games) licensed under CC-BY-4.0 (https://creativecommons.org/licenses/by/4.0/)\""
-};
-
 
 export const lightsData = {
     ambientLight: { color: 0xffffff, intensity: 1.0 },
