@@ -24,7 +24,6 @@ import {
     hospitalBedData,
     humanBodyData,
     curtainData,
-    doctorData
 } from "./default_data.js";
 import {merge} from "./merge.js";
 import Maze from "./maze.js";
@@ -273,38 +272,7 @@ export default class ThumbRaiser {
             });
         });
 
-        const doctorPositions = [
-            [-3.70, 0, 3.3],
-            [-0.7, 0, 3.3],
-            [2.9, 0, 3.3],
-            [-3.70, 0, -3.3],
-            [-0.7, 0, -3.3],
-            [2.9, 0, -3.3]
-        ];
 
-        doctorPositions.forEach((position, index) => {
-            loader.load(
-                doctorData.url,
-                (gltf) => {
-                    const doctor = gltf.scene;
-
-                    doctor.scale.set(0.005, 0.005, 0.005);
-                    doctor.position.set(...position);
-
-                    if (index < 3) {
-                        doctor.rotation.y = Math.PI * 2 ;
-                    } else {
-                        doctor.rotation.y = Math.PI ;
-                    }
-
-                    this.scene3D.add(doctor);
-                },
-                undefined,
-                (error) => {
-                    console.error('An error occurred while loading the model:', error);
-                }
-            );
-        });
 
         // Create a 2D scene (the viewports frames)
         this.scene2D = new THREE.Scene();
@@ -644,15 +612,12 @@ export default class ThumbRaiser {
 
     mouseMove(event) {
         if (event.buttons !== 2) return; //ignore left button
-        if (this.changeCameraDistance || this.changeCameraOrientation || this.dragMiniMap) { // Mouse action in progress
+        if (this.changeCameraOrientation || this.dragMiniMap) { // Mouse action in progress
             // Compute mouse movement and update mouse position
             const newMousePosition = new THREE.Vector2(event.clientX, window.innerHeight - event.clientY - 1);
             const mouseIncrement = newMousePosition.clone().sub(this.mousePosition);
             this.mousePosition = newMousePosition;
-            if (this.changeCameraDistance) {
-                this.activeViewCamera.updateDistance(-0.05 * (mouseIncrement.x + mouseIncrement.y));
-                this.displayPanel();
-            }
+
             if (this.dragMiniMap) {
                 const windowMinSize = Math.min(window.innerWidth, window.innerHeight);
                 const width = this.miniMapCamera.viewport.width * windowMinSize;
@@ -681,6 +646,7 @@ export default class ThumbRaiser {
         this.mousePosition = new THREE.Vector2(event.clientX, window.innerHeight - event.clientY - 1);
         // Select the camera whose view is being pointed
         const cameraView = this.getPointedViewport(this.mousePosition);
+
         if (cameraView !== "none" && cameraView !== "mini-map") { // One of the remaining cameras selected
             const cameraIndex = ["fixed", "first-person", "third-person", "top"].indexOf(cameraView);
             this.view.options.selectedIndex = cameraIndex;
