@@ -38,6 +38,19 @@ export const curtainData = {
     credits: "This work is based on \"curtains\" (https://sketchfab.com/3d-models/curtains-233b2736b19b4d51a1be26c217ec3a95) by ThreeDeeCreation (https://sketchfab.com/ThreeDeeCreation) licensed under CC-BY-4.0 (https://creativecommons.org/licenses/by/4.0/)\""
 };
 
+export const elevatorData = {
+    url: "./models/gltf/elevator-door/elevator-door.glb",
+    credits: "This work is based on \"elevator-door\" (https://sketchfab.com/3d-models/elevator-door-6704273f7f9644bfb875d978486494eb) by 1-3D.com (https://sketchfab.com/1-3D.com) licensed under CC-BY-4.0 (https://creativecommons.org/licenses/by/4.0/)\""
+};
+
+export const lab_benchData = {
+    url: "./models/gltf/lab_bench/lab_bench.glb",
+    credits: "This work is based on \"lab_bench\" (https://sketchfab.com/3d-models/lab-bench-1ac2a62c52a848bbaf746146dc7253f8) by Konstantin_Keller (https://sketchfab.com/Konstantin_Keller) licensed under CC-BY-4.0 (https://creativecommons.org/licenses/by/4.0/)\""
+};
+
+
+
+
 
 export const lightsData = {
     ambientLight: { color: 0xffffff, intensity: 1.0 },

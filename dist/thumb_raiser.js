@@ -24,6 +24,8 @@ import {
     hospitalBedData,
     humanBodyData,
     curtainData,
+    elevatorData,
+    lab_benchData
 } from "./default_data.js";
 import {merge} from "./merge.js";
 import Maze from "./maze.js";
@@ -272,7 +274,64 @@ export default class ThumbRaiser {
             });
         });
 
+        const elevatorPosition = [
+            [-4.85, 0.65, 0],
+        ];
 
+        elevatorPosition.forEach((position, index) => {
+            loader.load(
+                elevatorData.url,
+                (gltf) => {
+                    const elevator = gltf.scene;
+
+                    elevator.scale.set(0.006, 0.0045, 0.006);
+
+                    elevator.position.set(...position);
+
+                    elevator.rotation.y = Math.PI / 2;
+
+                    this.scene3D.add(elevator);
+                },
+                undefined,
+                (error) => {
+                    console.error('An error occurred while loading the model:', error);
+                }
+            );
+        });
+
+
+        const lab_benchPositions = [
+            [-2.2, 0, 4],
+            [1.75, 0, 4],
+            [4.8, 0, 4],
+            [-2.2, 0, -4],
+            [1.75, 0, -4],
+            [4.8, 0, -4]
+        ];
+
+        lab_benchPositions.forEach((position, index) => {
+            loader.load(
+                lab_benchData.url,
+                (gltf) => {
+                    const lab_bench = gltf.scene;
+
+                    if (index < 3) {
+                        lab_bench.scale.set(-0.7, 0.5, -0.7);
+                    } else {
+                        lab_bench.scale.set(0.7, 0.5, -0.7);
+                    }
+                    lab_bench.position.set(...position);
+
+                    lab_bench.rotation.y = Math.PI / 2;
+
+                    this.scene3D.add(lab_bench);
+                },
+                undefined,
+                (error) => {
+                    console.error('An error occurred while loading the model:', error);
+                }
+            );
+        });
 
         // Create a 2D scene (the viewports frames)
         this.scene2D = new THREE.Scene();
