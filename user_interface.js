@@ -43,9 +43,9 @@ export default class UserInteraction {
         pointLight1Folder.addColor(pointColor1, "color").onChange(color => colorCallback(pointLight1, color));
         pointLight1Folder.add(lights.object.pointLight1, "intensity", 0.0, 100.0, 1.0);
         pointLight1Folder.add(lights.object.pointLight1, "distance", 0.0, 20.0, 0.01);
-        pointLight1Folder.add(lights.object.pointLight1.position, "x", -10.0, 10.0, 0.01);
-        pointLight1Folder.add(lights.object.pointLight1.position, "y", 0.0, 20.0, 0.01);
-        pointLight1Folder.add(lights.object.pointLight1.position, "z", -10.0, 10.0, 0.01);
+        pointLight1Folder.add(lights.object.pointLight1.position, "x", -4.25, 10.0, 0.01);
+        pointLight1Folder.add(lights.object.pointLight1.position, "y", 4.45, 20.0, 0.01);
+        pointLight1Folder.add(lights.object.pointLight1.position, "z", 4, 10.0, 0.01);
 
         // Create point light #2 folder
         const pointLight2Folder = lightsFolder.addFolder("Point light #2");
@@ -54,9 +54,53 @@ export default class UserInteraction {
         pointLight2Folder.addColor(pointColor2, "color").onChange(color => colorCallback(pointLight2, color));
         pointLight2Folder.add(lights.object.pointLight2, "intensity", 0.0, 100.0, 1.0);
         pointLight2Folder.add(lights.object.pointLight2, "distance", 0.0, 20.0, 0.01);
-        pointLight2Folder.add(lights.object.pointLight2.position, "x", -10.0, 10.0, 0.01);
-        pointLight2Folder.add(lights.object.pointLight2.position, "y", 0.0, 20.0, 0.01);
-        pointLight2Folder.add(lights.object.pointLight2.position, "z", -10.0, 10.0, 0.01);
+        pointLight2Folder.add(lights.object.pointLight2.position, "x", -1.25, 10.0, 0.01);
+        pointLight2Folder.add(lights.object.pointLight2.position, "y", 4.45, 20.0, 0.01);
+        pointLight2Folder.add(lights.object.pointLight2.position, "z", 4, 10.0, 0.01);
+
+        // Create point light #3 folder
+        const pointLight3Folder = lightsFolder.addFolder("Point light #3");
+        const pointLight3 = lights.object.pointLight3;
+        const pointColor3 = { color: "#" + new THREE.Color(pointLight3.color).getHexString() };
+        pointLight3Folder.addColor(pointColor3, "color").onChange(color => colorCallback(pointLight3, color));
+        pointLight3Folder.add(lights.object.pointLight3, "intensity", 0.0, 100.0, 1.0);
+        pointLight3Folder.add(lights.object.pointLight3, "distance", 0.0, 20.0, 0.01);
+        pointLight3Folder.add(lights.object.pointLight3.position, "x", 2.8, 10.0, 0.01);
+        pointLight3Folder.add(lights.object.pointLight3.position, "y", 4.45, 20.0, 0.01);
+        pointLight3Folder.add(lights.object.pointLight3.position, "z", 4, 10.0, 0.01);
+
+        // Create point light #4 folder
+        const pointLight4Folder = lightsFolder.addFolder("Point light #4");
+        const pointLight4 = lights.object.pointLight4;
+        const pointColor4 = { color: "#" + new THREE.Color(pointLight4.color).getHexString() };
+        pointLight4Folder.addColor(pointColor4, "color").onChange(color => colorCallback(pointLight4, color));
+        pointLight4Folder.add(lights.object.pointLight4, "intensity", 0.0, 100.0, 1.0);
+        pointLight4Folder.add(lights.object.pointLight4, "distance", 0.0, 20.0, 0.01);
+        pointLight4Folder.add(lights.object.pointLight4.position, "x", -4.25, 10.0, 0.01);
+        pointLight4Folder.add(lights.object.pointLight4.position, "y", 4.45, 20.0, 0.01);
+        pointLight4Folder.add(lights.object.pointLight4.position, "z", -4, 10.0, 0.01);
+
+        // Create point light #5 folder
+        const pointLight5Folder = lightsFolder.addFolder("Point light #5");
+        const pointLight5 = lights.object.pointLight5;
+        const pointColor5 = { color: "#" + new THREE.Color(pointLight5.color).getHexString() };
+        pointLight5Folder.addColor(pointColor5, "color").onChange(color => colorCallback(pointLight5, color));
+        pointLight5Folder.add(lights.object.pointLight5, "intensity", 0.0, 100.0, 1.0);
+        pointLight5Folder.add(lights.object.pointLight5, "distance", 0.0, 20.0, 0.01);
+        pointLight5Folder.add(lights.object.pointLight5.position, "x", -1.25, 10.0, 0.01);
+        pointLight5Folder.add(lights.object.pointLight5.position, "y", 4.45, 20.0, 0.01);
+        pointLight5Folder.add(lights.object.pointLight5.position, "z", -4, 10.0, 0.01);
+
+        // Create point light #6 folder
+        const pointLight6Folder = lightsFolder.addFolder("Point light #2");
+        const pointLight6 = lights.object.pointLight2;
+        const pointColor6 = { color: "#" + new THREE.Color(pointLight6.color).getHexString() };
+        pointLight6Folder.addColor(pointColor6, "color").onChange(color => colorCallback(pointLight6, color));
+        pointLight6Folder.add(lights.object.pointLight6, "intensity", 0.0, 100.0, 1.0);
+        pointLight6Folder.add(lights.object.pointLight6, "distance", 0.0, 20.0, 0.01);
+        pointLight6Folder.add(lights.object.pointLight6.position, "x", 2.80, 10.0, 0.01);
+        pointLight6Folder.add(lights.object.pointLight6.position, "y", 4.45, 20.0, 0.01);
+        pointLight6Folder.add(lights.object.pointLight6.position, "z", -4, 10.0, 0.01);
 
         // Create the shadows folder
         const shadowsFolder = this.gui.addFolder("Shadows");
