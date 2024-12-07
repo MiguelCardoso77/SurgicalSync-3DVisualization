@@ -2,7 +2,7 @@ class BackEndConnection {
 
     async checkSurgeryRoomsStatus() {
         try {
-            const response = await axios.get('https://localhost:5001/api/surgeryRooms', {
+            const response = await axios.get('https://surgicalsyncbackend.azurewebsites.net/api/surgeryRooms', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
