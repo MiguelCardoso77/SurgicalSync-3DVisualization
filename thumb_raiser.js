@@ -15,17 +15,17 @@ import Stats from "three/addons/libs/stats.module.js";
 import Orientation from "./orientation.js";
 import {GLTFLoader} from "three/addons/loaders/GLTFLoader.js";
 import {
-    generalData,
-    mazeData,
-    playerData,
-    lightsData,
-    fogData,
     cameraData,
-    hospitalBedData,
-    humanBodyData,
     curtainData,
     elevatorData,
-    lab_benchData
+    fogData,
+    generalData,
+    hospitalBedData,
+    humanBodyData,
+    lab_benchData,
+    lightsData,
+    mazeData,
+    playerData
 } from "./default_data.js";
 import {merge} from "./merge.js";
 import Maze from "./maze.js";
@@ -443,6 +443,9 @@ export default class ThumbRaiser {
         // Register the event handler to be called on mouse down
         this.renderer.domElement.addEventListener("mousedown", event => this.mouseDown(event));
 
+        // Register the event handler to be called on bed click
+        this.renderer.domElement.addEventListener('click', (event) => this.buttonClick(event));
+
         // Register the event handler to be called on mouse move
         this.renderer.domElement.addEventListener("mousemove", event => this.mouseMove(event));
 
@@ -591,64 +594,65 @@ export default class ThumbRaiser {
         if (["horizontal", "vertical", "distance", "zoom"].indexOf(event.target.id) < 0) {
             event.target.blur();
         }
-        if (document.activeElement == document.body) {
+        if (document.activeElement === document.body) {
             // Prevent the "Space" and "Arrow" keys from scrolling the document's content
-            if (event.code == "Space" || event.code == "ArrowLeft" || event.code == "ArrowRight" || event.code == "ArrowDown" || event.code == "ArrowUp") {
+            if (event.code === "Space" || event.code === "ArrowLeft" || event.code === "ArrowRight" || event.code === "ArrowDown" || event.code === "ArrowUp") {
                 event.preventDefault();
             }
-            if (event.code == this.player.keyCodes.fixedView && state) { // Select fixed view
+            if (event.code === this.player.keyCodes.fixedView && state) { // Select fixed view
                 this.setActiveViewCamera(this.fixedViewCamera);
-            } else if (event.code == this.player.keyCodes.firstPersonView && state) { // Select first-person view
+            } else if (event.code === this.player.keyCodes.firstPersonView && state) { // Select first-person view
                 this.setActiveViewCamera(this.firstPersonViewCamera);
-            } else if (event.code == this.player.keyCodes.thirdPersonView && state) { // Select third-person view
+            } else if (event.code === this.player.keyCodes.thirdPersonView && state) { // Select third-person view
                 this.setActiveViewCamera(this.thirdPersonViewCamera);
-            } else if (event.code == this.player.keyCodes.topView && state) { // Select top view
+            } else if (event.code === this.player.keyCodes.topView && state) { // Select top view
                 this.setActiveViewCamera(this.topViewCamera);
             }
-            if (event.code == this.player.keyCodes.viewMode && state) { // Single-view mode / multiple-views mode
+            if (event.code === this.player.keyCodes.viewMode && state) { // Single-view mode / multiple-views mode
                 this.setViewMode(!this.multipleViewsCheckBox.checked);
             }
-            if (event.code == this.player.keyCodes.userInterface && state) { // Display / hide user interface
+            if (event.code === this.player.keyCodes.userInterface && state) { // Display / hide user interface
                 this.setUserInterfaceVisibility(!this.userInterfaceCheckBox.checked);
             }
-            if (event.code == this.player.keyCodes.miniMap && state) { // Display / hide mini-map
+            if (event.code === this.player.keyCodes.miniMap && state) { // Display / hide mini-map
                 this.setMiniMapVisibility(!this.miniMapCheckBox.checked);
             }
-            if (event.code == this.player.keyCodes.help && state) { // Display / hide help
+            if (event.code === this.player.keyCodes.help && state) { // Display / hide help
                 this.setHelpVisibility(!this.helpCheckBox.checked);
             }
-            if (event.code == this.player.keyCodes.statistics && state) { // Display / hide statistics
+            if (event.code === this.player.keyCodes.statistics && state) { // Display / hide statistics
                 this.setStatisticsVisibility(!this.statisticsCheckBox.checked);
             }
-            if (event.code == this.player.keyCodes.run) {
+            if (event.code === this.player.keyCodes.run) {
                 this.player.keyStates.run = state;
             }
-            if (event.code == this.player.keyCodes.left) {
+            if (event.code === this.player.keyCodes.left) {
                 this.player.keyStates.left = state;
-            } else if (event.code == this.player.keyCodes.right) {
+            } else if (event.code === this.player.keyCodes.right) {
                 this.player.keyStates.right = state;
             }
-            if (event.code == this.player.keyCodes.backward) {
+            if (event.code === this.player.keyCodes.backward) {
                 this.player.keyStates.backward = state;
-            } else if (event.code == this.player.keyCodes.forward) {
+            } else if (event.code === this.player.keyCodes.forward) {
                 this.player.keyStates.forward = state;
             }
-            if (event.code == this.player.keyCodes.jump) {
+            if (event.code === this.player.keyCodes.jump) {
                 this.player.keyStates.jump = state;
-            } else if (event.code == this.player.keyCodes.yes) {
+            } else if (event.code === this.player.keyCodes.yes) {
                 this.player.keyStates.yes = state;
-            } else if (event.code == this.player.keyCodes.no) {
+            } else if (event.code === this.player.keyCodes.no) {
                 this.player.keyStates.no = state;
-            } else if (event.code == this.player.keyCodes.wave) {
+            } else if (event.code === this.player.keyCodes.wave) {
                 this.player.keyStates.wave = state;
-            } else if (event.code == this.player.keyCodes.punch) {
+            } else if (event.code === this.player.keyCodes.punch) {
                 this.player.keyStates.punch = state;
-            } else if (event.code == this.player.keyCodes.thumbsUp) {
+            } else if (event.code === this.player.keyCodes.thumbsUp) {
                 this.player.keyStates.thumbsUp = state;
             }
         }
     }
 
+    /**
     mouseDown(event) {
         if (event.buttons !== 2) return; //ignore left button
         // Store current mouse position in window coordinates (mouse coordinate system: origin in the top-left corner; window coordinate system: origin in the bottom-left corner)
@@ -667,6 +671,32 @@ export default class ThumbRaiser {
             }
         }
 
+    }
+    */
+
+    mouseDown(event, clickableObjects) {
+        if (event.button === 0) {
+            this.handleBedSelection(event, clickableObjects);
+        } else if (event.button === 2) { // Right-click (original behavior)
+            if (event.buttons !== 2) return; // Ignore unless the right button is pressed
+
+            // Store current mouse position in window coordinates
+            this.mousePosition = new THREE.Vector2(event.clientX, window.innerHeight - event.clientY - 1);
+
+            // Select the camera whose view is being pointed
+            const cameraView = this.getPointedViewport(this.mousePosition);
+            if (cameraView !== "none") {
+                if (cameraView === "mini-map") {
+                    this.dragMiniMap = true;
+                } else {
+                    const cameraIndex = ["fixed", "first-person", "third-person", "top"].indexOf(cameraView);
+                    this.view.options.selectedIndex = cameraIndex;
+                    this.setActiveViewCamera([this.fixedViewCamera, this.firstPersonViewCamera, this.thirdPersonViewCamera, this.topViewCamera][cameraIndex]);
+                    this.changeCameraOrientation = true;
+                    this.changeCameraDistance = true;
+                }
+            }
+        }
     }
 
     mouseMove(event) {
@@ -875,7 +905,7 @@ export default class ThumbRaiser {
                     } else if (this.player.keyStates.thumbsUp) {
                         this.animations.fadeToAction("ThumbsUp", 0.2);
                     } else {
-                        this.animations.fadeToAction("Idle", this.animations.activeName != "Death" ? 0.2 : 0.6);
+                        this.animations.fadeToAction("Idle", this.animations.activeName !== "Death" ? 0.2 : 0.6);
                     }
                     this.player.object.position.set(this.player.position.x, this.player.position.y, this.player.position.z);
                     this.player.object.rotation.y = direction - this.player.initialDirection;
@@ -909,7 +939,7 @@ export default class ThumbRaiser {
                 cameras = [this.activeViewCamera];
             }
             for (const camera of cameras) {
-                this.player.object.visible = (camera != this.firstPersonViewCamera);
+                this.player.object.visible = (camera !== this.firstPersonViewCamera);
                 const viewport = camera.getViewport();
                 this.renderer.setViewport(viewport.x, viewport.y, viewport.width, viewport.height);
                 this.renderer.render(this.scene3D, camera.object);
