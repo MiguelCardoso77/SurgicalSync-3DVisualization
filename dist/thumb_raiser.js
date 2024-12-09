@@ -177,6 +177,8 @@ export default class ThumbRaiser {
         this.miniMapCameraParameters = merge({}, cameraData, miniMapCameraParameters);
 
         const loader = new GLTFLoader();
+        const clickableObjects = [];
+        let boxCounter = 0;
 
         const bedPositions = [
             [-4.25, 0.3, 4],
@@ -196,7 +198,18 @@ export default class ThumbRaiser {
                     hospitalBed.scale.set(0.02, 0.02, 0.02);
                     hospitalBed.position.set(...position);
 
+                    hospitalBed.name = "hospitalBed";
                     this.scene3D.add(hospitalBed);
+
+                    hospitalBed.userData.boundingBox = new THREE.Box3().setFromObject(hospitalBed);
+
+                    const boxHelper = new THREE.BoxHelper(hospitalBed, 0x00ff00);
+                    boxHelper.name = `boxHelper_${boxCounter}`;
+                    this.scene3D.add(boxHelper);
+
+                    clickableObjects.push(boxHelper);
+
+                    boxCounter++;
                 },
                 undefined,
                 (error) => {
@@ -441,7 +454,7 @@ export default class ThumbRaiser {
         document.addEventListener("keyup", event => this.keyChange(event, false));
 
         // Register the event handler to be called on mouse down
-        this.renderer.domElement.addEventListener("mousedown", event => this.mouseDown(event));
+        this.renderer.domElement.addEventListener("mousedown", event => this.mouseDown(event, clickableObjects));
 
         // Register the event handler to be called on bed click
         this.renderer.domElement.addEventListener('click', (event) => this.buttonClick(event));
@@ -744,6 +757,57 @@ export default class ThumbRaiser {
             this.setActiveViewCamera(activeViewCamera);
         }
     }
+
+    handleBedSelection(event, clickableObjects) {
+        if (!clickableObjects || clickableObjects.length === 0) {
+            console.error("No clickable objects available for raycasting.");
+            return;
+        }
+
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2(
+            (event.clientX / window.innerWidth) * 2 - 1,
+            -(event.clientY / window.innerHeight) * 2 + 1
+        );
+
+        if (!this.activeViewCamera) {
+            console.error("Active camera is not set. Cannot perform raycasting.");
+            return;
+        }
+
+        this.scene3D.traverse((child) => {
+            if (child.updateMatrixWorld) {
+                child.updateMatrixWorld(true);
+            }
+        });
+
+        raycaster.setFromCamera(mouse, this.activeViewCamera);
+
+        const intersects = raycaster.intersectObjects(clickableObjects, true);
+        console.log("Intersects:", intersects);
+
+        if (intersects.length > 0) {
+            let bed = intersects[0].object;
+
+            while (bed.parent && bed.parent !== this.scene3D) {
+                bed = bed.parent;
+            }
+
+            if (clickableObjects.includes(bed)) {
+                console.log("Clicked on bed:", bed);
+                this.handleBedInteraction(bed); // Interact with the bed
+            } else {
+                console.log("Not a valid bed object:", bed);
+            }
+        }
+    }
+
+    handleBedInteraction(bed) {
+        bed.material.color.set(0xff0000);
+
+        console.log("Bed selected:", bed.name);
+    }
+
 
     contextMenu(event) {
         // Prevent the context menu from appearing when the secondary mouse button is clicked
