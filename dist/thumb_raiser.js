@@ -178,7 +178,7 @@ export default class ThumbRaiser {
 
         const loader = new GLTFLoader();
         const clickableObjects = [];
-        let boxCounter = 0;
+        let counter = 1;
 
         const bedPositions = [
             [-4.25, 0.3, 4],
@@ -198,18 +198,31 @@ export default class ThumbRaiser {
                     hospitalBed.scale.set(0.02, 0.02, 0.02);
                     hospitalBed.position.set(...position);
 
-                    hospitalBed.name = "hospitalBed";
+                    hospitalBed.name = `hospitalBed_${counter}`;
                     this.scene3D.add(hospitalBed);
 
-                    hospitalBed.userData.boundingBox = new THREE.Box3().setFromObject(hospitalBed);
+                    const boundingBox = new THREE.Box3().setFromObject(hospitalBed);
+                    const size = new THREE.Vector3();
+                    const center = new THREE.Vector3();
+                    boundingBox.getSize(size);
+                    boundingBox.getCenter(center);
 
-                    const boxHelper = new THREE.BoxHelper(hospitalBed, 0x00ff00);
-                    boxHelper.name = `boxHelper_${boxCounter}`;
-                    this.scene3D.add(boxHelper);
+                    const geometry = new THREE.BoxGeometry(size.x + 0.1, size.y + 0.2, size.z + 0.1);
+                    const material = new THREE.MeshBasicMaterial({
+                        color: 0x00ff00,
+                        transparent: true,
+                        opacity: 0.3,
+                    });
 
-                    clickableObjects.push(boxHelper);
+                    const solidBox = new THREE.Mesh(geometry, material);
+                    solidBox.name = `solidBox_${counter}`;
+                    solidBox.position.copy(center);
+                    solidBox.userData.hospitalBed = hospitalBed;
 
-                    boxCounter++;
+                    this.scene3D.add(solidBox);
+                    clickableObjects.push(solidBox);
+
+                    counter++;
                 },
                 undefined,
                 (error) => {
@@ -759,55 +772,77 @@ export default class ThumbRaiser {
     }
 
     handleBedSelection(event, clickableObjects) {
-        if (!clickableObjects || clickableObjects.length === 0) {
-            console.error("No clickable objects available for raycasting.");
-            return;
-        }
-
         const raycaster = new THREE.Raycaster();
         const mouse = new THREE.Vector2(
             (event.clientX / window.innerWidth) * 2 - 1,
             -(event.clientY / window.innerHeight) * 2 + 1
         );
 
-        if (!this.activeViewCamera) {
+        if (!clickableObjects || clickableObjects.length === 0) {
+            console.error("No clickable objects available for raycasting.");
+            return;
+        }
+
+        if (!this.fixedViewCamera) {
             console.error("Active camera is not set. Cannot perform raycasting.");
             return;
         }
 
-        this.scene3D.traverse((child) => {
-            if (child.updateMatrixWorld) {
-                child.updateMatrixWorld(true);
-            }
-        });
-
-        raycaster.setFromCamera(mouse, this.activeViewCamera);
+        raycaster.setFromCamera(mouse, this.activeViewCamera.object);
 
         const intersects = raycaster.intersectObjects(clickableObjects, true);
         console.log("Intersects:", intersects);
 
         if (intersects.length > 0) {
-            let bed = intersects[0].object;
+            const clickedObject = intersects[0].object;
 
-            while (bed.parent && bed.parent !== this.scene3D) {
-                bed = bed.parent;
-            }
-
-            if (clickableObjects.includes(bed)) {
-                console.log("Clicked on bed:", bed);
-                this.handleBedInteraction(bed); // Interact with the bed
+            const associatedBed = clickedObject.userData.hospitalBed;
+            if (associatedBed) {
+                console.log("Selected bed:", associatedBed.name);
+                this.handleBedInteraction(associatedBed);
             } else {
-                console.log("Not a valid bed object:", bed);
+                console.warn("No bed linked to this bounding box!");
             }
         }
     }
 
     handleBedInteraction(bed) {
-        bed.material.color.set(0xff0000);
+        console.log("Interacting with bed:", bed.name);
 
-        console.log("Bed selected:", bed.name);
+        const targetPosition = new THREE.Vector3();
+        bed.getWorldPosition(targetPosition);
+
+        const offset = new THREE.Vector3(0, 7, 0);
+        const newCameraPosition = targetPosition.clone().add(offset);
+
+        switch (bed.name) {
+            case 'hospitalBed_1':
+                newCameraPosition.set(-4.25, 7.3, 4);
+                break;
+            case 'hospitalBed_2':
+                newCameraPosition.set(-1.25, 7.3, 4);
+                break;
+            case 'hospitalBed_3':
+                newCameraPosition.set(2.80, 7.3, 4);
+                break;
+            case 'hospitalBed_4':
+                newCameraPosition.set(-4.25, 7.3, -4);
+                break;
+            case 'hospitalBed_5':
+                newCameraPosition.set(-1.25, 7.3, -4);
+                break;
+            case 'hospitalBed_6':
+                newCameraPosition.set(2.80, 7.3, -4);
+                break;
+            default:
+                console.log('Unknown bed:', bed.name);
+                break;
+        }
+
+        this.fixedViewCamera.object.position.copy(newCameraPosition);
+        this.fixedViewCamera.object.up.set(0, 1, 0);
+        this.fixedViewCamera.object.lookAt(targetPosition);
     }
-
 
     contextMenu(event) {
         // Prevent the context menu from appearing when the secondary mouse button is clicked
