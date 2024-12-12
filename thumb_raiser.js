@@ -211,7 +211,7 @@ export default class ThumbRaiser {
                     const material = new THREE.MeshBasicMaterial({
                         color: 0x00ff00,
                         transparent: true,
-                        opacity: 0.3,
+                        opacity: 0,
                     });
 
                     const solidBox = new THREE.Mesh(geometry, material);
@@ -809,39 +809,39 @@ export default class ThumbRaiser {
     handleBedInteraction(bed) {
         console.log("Interacting with bed:", bed.name);
 
-        const targetPosition = new THREE.Vector3();
-        bed.getWorldPosition(targetPosition);
-
-        const offset = new THREE.Vector3(0, 7, 0);
-        const newCameraPosition = targetPosition.clone().add(offset);
+        let roomCenterPosition = new THREE.Vector3();
 
         switch (bed.name) {
             case 'hospitalBed_1':
-                newCameraPosition.set(-4.25, 7.3, 4);
+                roomCenterPosition.set(-3, 0, 3); // Centro da sala 1
                 break;
             case 'hospitalBed_2':
-                newCameraPosition.set(-1.25, 7.3, 4);
+                roomCenterPosition.set(0, 0, 3); // Centro da sala 2
                 break;
             case 'hospitalBed_3':
-                newCameraPosition.set(2.80, 7.3, 4);
+                roomCenterPosition.set(4, 0, 3);  // Centro da sala 3
                 break;
             case 'hospitalBed_4':
-                newCameraPosition.set(-4.25, 7.3, -4);
+                roomCenterPosition.set(-3, 0, -3); // Centro da sala 4
                 break;
             case 'hospitalBed_5':
-                newCameraPosition.set(-1.25, 7.3, -4);
+                roomCenterPosition.set(0, 0, -3); // Centro da sala 5
                 break;
             case 'hospitalBed_6':
-                newCameraPosition.set(2.80, 7.3, -4);
+                roomCenterPosition.set(4, 0, -3);  // Centro da sala 6
                 break;
             default:
                 console.log('Unknown bed:', bed.name);
-                break;
+                return; // Saia se a cama não for reconhecida
         }
 
+        // Posicionar a câmera diretamente acima do centro da sala
+        const newCameraPosition = roomCenterPosition.clone().add(new THREE.Vector3(0, 7, 0)); // 7 unidades acima
+
+        // Configurar a câmera
         this.fixedViewCamera.object.position.copy(newCameraPosition);
         this.fixedViewCamera.object.up.set(0, 1, 0);
-        this.fixedViewCamera.object.lookAt(targetPosition);
+        this.fixedViewCamera.object.lookAt(roomCenterPosition); // Olhar diretamente para o centro da sala
     }
 
     contextMenu(event) {
