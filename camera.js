@@ -248,35 +248,4 @@ export default class Camera extends THREE.PerspectiveCamera {
     updateZoom(zoomIncrement) {
         this.setZoom(this.zoom + zoomIncrement);
     }
-
-    animateToTarget(camera, targetPosition, targetLookAt, duration) {
-        const startPosition = camera.position.clone();
-        const startLookAt = camera.getWorldDirection(new THREE.Vector3()).clone();
-        const deltaPosition = targetPosition.clone().sub(startPosition);
-        const deltaLookAt = targetLookAt.clone().sub(startLookAt);
-
-        let elapsedTime = 0;
-
-        const animate = () => {
-            if (elapsedTime < duration) {
-                elapsedTime += 1 / 60;
-                const t = elapsedTime / duration;
-
-                camera.position.set(
-                    startPosition.x + deltaPosition.x * t,
-                    startPosition.y + deltaPosition.y * t,
-                    startPosition.z + deltaPosition.z * t
-                );
-
-                const currentLookAt = startLookAt.clone().add(deltaLookAt.clone().multiplyScalar(t));
-                camera.lookAt(currentLookAt);
-
-                requestAnimationFrame(animate);
-            } else {
-                camera.position.copy(targetPosition);
-                camera.lookAt(targetLookAt);
-            }
-        };
-        animate();
-    }
 }
