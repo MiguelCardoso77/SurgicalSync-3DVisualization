@@ -1,7 +1,5 @@
 import * as THREE from "three";
 import Orientation from "./orientation.js";
-import TWEEN from "@tweenjs/tween.js";
-
 /*
  * parameters = {
  *  view: String,
