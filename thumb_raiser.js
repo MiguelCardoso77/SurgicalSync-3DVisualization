@@ -840,9 +840,8 @@ export default class ThumbRaiser {
 
 
         const cameraLookAt = roomCenterPosition;
-        // Configurar a câmera
 
-        activatedViewCamera.animateToTarget(this.fixedViewCamera.object, newCameraPosition, cameraLookAt, 2);
+        activatedViewCamera.animateToTarget(this.fixedViewCamera.object, newCameraPosition, cameraLookAt, 7);
 
         // this.fixedViewCamera.object.position.copy(newCameraPosition);
         // this.fixedViewCamera.object.up.set(0, 1, 0);
