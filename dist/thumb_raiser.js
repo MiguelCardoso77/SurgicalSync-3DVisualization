@@ -771,6 +771,37 @@ export default class ThumbRaiser {
         }
     }
 
+    animateToTarget(camera, targetPosition, targetLookAt, duration) {
+        const startPosition = camera.position.clone();
+        const startLookAt = camera.getWorldDirection(new THREE.Vector3()).clone();
+        const deltaPosition = targetPosition.clone().sub(startPosition);
+        const deltaLookAt = targetLookAt.clone().sub(startLookAt);
+
+        let elapsedTime = 0;
+
+        const animate = () => {
+            if (elapsedTime < duration) {
+                elapsedTime += 1 / 60;
+                const t = elapsedTime / duration;
+
+                camera.position.set(
+                    startPosition.x + deltaPosition.x * t,
+                    startPosition.y + deltaPosition.y * t,
+                    startPosition.z + deltaPosition.z * t
+                );
+
+                const currentLookAt = startLookAt.clone().add(deltaLookAt.clone().multiplyScalar(t));
+                camera.lookAt(currentLookAt);
+
+                requestAnimationFrame(animate);
+            } else {
+                camera.position.copy(targetPosition);
+                camera.lookAt(targetLookAt);
+            }
+        };
+        animate();
+    }
+
     handleBedSelection(event, clickableObjects) {
         const raycaster = new THREE.Raycaster();
         const mouse = new THREE.Vector2(
@@ -838,14 +869,13 @@ export default class ThumbRaiser {
         // Posicionar a câmera diretamente acima do centro da sala
         const newCameraPosition = roomCenterPosition.clone().add(new THREE.Vector3(0, 7, 0)); // 7 unidades acima
 
-
         const cameraLookAt = roomCenterPosition;
 
-        activatedViewCamera.animateToTarget(this.fixedViewCamera.object, newCameraPosition, cameraLookAt, 7);
+        this.animateToTarget(this.fixedViewCamera.object, newCameraPosition, cameraLookAt, 7);
 
-        // this.fixedViewCamera.object.position.copy(newCameraPosition);
-        // this.fixedViewCamera.object.up.set(0, 1, 0);
-        // this.fixedViewCamera.object.lookAt(roomCenterPosition); // Olhar diretamente para o centro da sala
+        //this.fixedViewCamera.object.position.copy(newCameraPosition);
+        //this.fixedViewCamera.object.up.set(0, 1, 0);
+        //this.fixedViewCamera.object.lookAt(roomCenterPosition); // Olhar diretamente para o centro da sala
     }
 
     contextMenu(event) {
