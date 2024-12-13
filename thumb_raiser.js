@@ -770,7 +770,7 @@ export default class ThumbRaiser {
             this.setActiveViewCamera(activeViewCamera);
         }
     }
-
+    /*
     animateToTarget(camera, targetPosition, targetLookAt, duration) {
         const startPosition = camera.position.clone();
         const startLookAt = camera.getWorldDirection(new THREE.Vector3()).clone();
@@ -801,6 +801,8 @@ export default class ThumbRaiser {
         };
         animate();
     }
+
+     */
 
     handleBedSelection(event, clickableObjects) {
         const raycaster = new THREE.Raycaster();
@@ -869,13 +871,13 @@ export default class ThumbRaiser {
         // Posicionar a câmera diretamente acima do centro da sala
         const newCameraPosition = roomCenterPosition.clone().add(new THREE.Vector3(0, 7, 0)); // 7 unidades acima
 
-        const cameraLookAt = roomCenterPosition;
+        // const cameraLookAt = roomCenterPosition;
 
-        this.animateToTarget(this.fixedViewCamera.object, newCameraPosition, cameraLookAt, 7);
+        //this.animateToTarget(this.fixedViewCamera.object, newCameraPosition, cameraLookAt, 7);
 
-        //this.fixedViewCamera.object.position.copy(newCameraPosition);
-        //this.fixedViewCamera.object.up.set(0, 1, 0);
-        //this.fixedViewCamera.object.lookAt(roomCenterPosition); // Olhar diretamente para o centro da sala
+        this.fixedViewCamera.object.position.copy(newCameraPosition);
+        this.fixedViewCamera.object.up.set(0, 1, 0);
+        this.fixedViewCamera.object.lookAt(roomCenterPosition); // Olhar diretamente para o centro da sala
     }
 
     contextMenu(event) {
