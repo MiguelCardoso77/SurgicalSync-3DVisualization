@@ -838,10 +838,15 @@ export default class ThumbRaiser {
         // Posicionar a câmera diretamente acima do centro da sala
         const newCameraPosition = roomCenterPosition.clone().add(new THREE.Vector3(0, 7, 0)); // 7 unidades acima
 
+
+        const cameraLookAt = roomCenterPosition;
         // Configurar a câmera
-        this.fixedViewCamera.object.position.copy(newCameraPosition);
-        this.fixedViewCamera.object.up.set(0, 1, 0);
-        this.fixedViewCamera.object.lookAt(roomCenterPosition); // Olhar diretamente para o centro da sala
+
+        activatedViewCamera.animateToTarget(this.fixedViewCamera.object, newCameraPosition, cameraLookAt, 2);
+
+        // this.fixedViewCamera.object.position.copy(newCameraPosition);
+        // this.fixedViewCamera.object.up.set(0, 1, 0);
+        // this.fixedViewCamera.object.lookAt(roomCenterPosition); // Olhar diretamente para o centro da sala
     }
 
     contextMenu(event) {
