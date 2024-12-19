@@ -92,7 +92,7 @@ export default class UserInteraction {
         pointLight5Folder.add(lights.object.pointLight5.position, "z", -4, 10.0, 0.01);
 
         // Create point light #6 folder
-        const pointLight6Folder = lightsFolder.addFolder("Point light #2");
+        const pointLight6Folder = lightsFolder.addFolder("Point light #6");
         const pointLight6 = lights.object.pointLight2;
         const pointColor6 = { color: "#" + new THREE.Color(pointLight6.color).getHexString() };
         pointLight6Folder.addColor(pointColor6, "color").onChange(color => colorCallback(pointLight6, color));
