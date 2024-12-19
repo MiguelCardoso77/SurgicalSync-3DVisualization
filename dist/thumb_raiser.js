@@ -326,10 +326,10 @@ export default class ThumbRaiser {
 
 
         const lab_benchPositions = [
-            [-2.2, 0, 4],
+            [-2.3, 0, 4],
             [1.75, 0, 4],
             [4.8, 0, 4],
-            [-2.2, 0, -4],
+            [-2.3, 0, -4],
             [1.75, 0, -4],
             [4.8, 0, -4]
         ];
@@ -473,6 +473,9 @@ export default class ThumbRaiser {
 
         // Register the event handler to be called on mouse move
         this.renderer.domElement.addEventListener("mousemove", event => this.mouseMove(event));
+
+        // Register the event handler to be called on mouse move
+        this.renderer.domElement.addEventListener("menuInfo", event => this.onKeyDown(event));
 
         // Register the event handler to be called on mouse up
         this.renderer.domElement.addEventListener("mouseup", event => this.mouseUp(event));
@@ -671,6 +674,7 @@ export default class ThumbRaiser {
                 this.player.keyStates.wave = state;
             } else if (event.code === this.player.keyCodes.punch) {
                 this.player.keyStates.punch = state;
+                this.addMenuInfo();
             } else if (event.code === this.player.keyCodes.thumbsUp) {
                 this.player.keyStates.thumbsUp = state;
             }
@@ -678,26 +682,26 @@ export default class ThumbRaiser {
     }
 
     /**
-    mouseDown(event) {
-        if (event.buttons !== 2) return; //ignore left button
-        // Store current mouse position in window coordinates (mouse coordinate system: origin in the top-left corner; window coordinate system: origin in the bottom-left corner)
-        this.mousePosition = new THREE.Vector2(event.clientX, window.innerHeight - event.clientY - 1);
-        // Select the camera whose view is being pointed
-        const cameraView = this.getPointedViewport(this.mousePosition);
-        if (cameraView !== "none" ) {
-            if (cameraView === "mini-map") {// Mini-map camera selected
-                this.dragMiniMap = true;
-            } else {
-                const cameraIndex = ["fixed", "first-person", "third-person", "top"].indexOf(cameraView);
-                this.view.options.selectedIndex = cameraIndex;
-                this.setActiveViewCamera([this.fixedViewCamera, this.firstPersonViewCamera, this.thirdPersonViewCamera, this.topViewCamera][cameraIndex]);
-                this.changeCameraOrientation = true;
-                this.changeCameraDistance = true;
-            }
-        }
+     mouseDown(event) {
+     if (event.buttons !== 2) return; //ignore left button
+     // Store current mouse position in window coordinates (mouse coordinate system: origin in the top-left corner; window coordinate system: origin in the bottom-left corner)
+     this.mousePosition = new THREE.Vector2(event.clientX, window.innerHeight - event.clientY - 1);
+     // Select the camera whose view is being pointed
+     const cameraView = this.getPointedViewport(this.mousePosition);
+     if (cameraView !== "none" ) {
+     if (cameraView === "mini-map") {// Mini-map camera selected
+     this.dragMiniMap = true;
+     } else {
+     const cameraIndex = ["fixed", "first-person", "third-person", "top"].indexOf(cameraView);
+     this.view.options.selectedIndex = cameraIndex;
+     this.setActiveViewCamera([this.fixedViewCamera, this.firstPersonViewCamera, this.thirdPersonViewCamera, this.topViewCamera][cameraIndex]);
+     this.changeCameraOrientation = true;
+     this.changeCameraDistance = true;
+     }
+     }
 
-    }
-    */
+     }
+     */
 
     mouseDown(event, clickableObjects) {
         if (event.button === 0) {
@@ -769,6 +773,7 @@ export default class ThumbRaiser {
             this.setActiveViewCamera(activeViewCamera);
         }
     }
+
     animateToTarget(camera, targetPosition, targetLookAt, duration) {
         const startPosition = camera.position.clone();
         const startLookAt = camera.getWorldDirection(new THREE.Vector3()).clone();
@@ -800,6 +805,8 @@ export default class ThumbRaiser {
         animate();
     }
 
+    selectedBed = null;
+
     handleBedSelection(event, clickableObjects) {
         const raycaster = new THREE.Raycaster();
         const mouse = new THREE.Vector2(
@@ -828,11 +835,26 @@ export default class ThumbRaiser {
             const associatedBed = clickedObject.userData.hospitalBed;
             if (associatedBed) {
                 console.log("Selected bed:", associatedBed.name);
+                this.selectedBed = associatedBed;
                 this.handleBedInteraction(associatedBed);
             } else {
                 console.warn("No bed linked to this bounding box!");
             }
         }
+    }
+
+    rotateCamera(degrees) {
+        const radians = degrees * (Math.PI / 180); // Converte graus para radianos
+        // Supõe-se que `camera` é sua instância da câmera
+        this.camera.rotation.y += radians;
+        // Atualiza a renderização, se necessário, dependendo do seu framework
+        this.renderScene();
+    }
+
+
+    renderScene() {
+        // Se estiver usando Three.js, seria algo como:
+        this.renderer.render(this.scene, this.camera);
     }
 
     handleBedInteraction(bed) {
@@ -861,7 +883,7 @@ export default class ThumbRaiser {
                 break;
             default:
                 console.log('Unknown bed:', bed.name);
-                return; // Saia se a cama não for reconhecida
+                return;
         }
 
         // Posicionar a câmera diretamente acima do centro da sala
@@ -1081,6 +1103,41 @@ export default class ThumbRaiser {
                 this.renderer.render(this.scene3D, this.miniMapCamera.object);
                 this.renderer.render(this.scene2D, this.camera2D);
             }
+        }
+    }
+
+    addMenuInfo() {
+        let roomInfo = null;
+        console.log(this.selectedBed.name);
+
+        switch (this.selectedBed.name) {
+            case 'hospitalBed_1':
+                roomInfo = 1;
+                break;
+            case 'hospitalBed_2':
+                roomInfo = 2;
+                break;
+            case 'hospitalBed_3':
+                roomInfo = 3;
+                break;
+            case 'hospitalBed_4':
+                roomInfo = 4;
+                break;
+            case 'hospitalBed_5':
+                roomInfo = 5;
+                break;
+            case 'hospitalBed_6':
+                roomInfo = 6;
+                break;
+            default:
+                console.log('Unknown bed:', this.selectedBed.name);
+                return;
+
+            let id = roomInfo;
+            const api = new BackEndConnection();
+            api.getRoomData(id);
+
+
         }
     }
 }
