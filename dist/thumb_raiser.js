@@ -448,7 +448,7 @@ export default class ThumbRaiser {
         this.statisticsCheckBox.checked = false;
 
         // Build the help panel
-        this.buildHelpPanel();
+        //this.buildHelpPanel();
 
         // Set the active view camera (fixed view)
         this.setActiveViewCamera(this.fixedViewCamera);
@@ -505,7 +505,7 @@ export default class ThumbRaiser {
         this.activeElement = document.activeElement;
     }
 
-    buildHelpPanel() {
+    /*buildHelpPanel() {
         const table = document.getElementById("help-table");
         let i = 0;
         for (const key in this.player.keyCodes) {
@@ -516,7 +516,7 @@ export default class ThumbRaiser {
             table.rows[i++].cells[0].innerHTML = this.player.keyCodes[key];
         }
         table.rows[i].cells[0].innerHTML = this.maze.credits + "<br>" + this.player.credits;
-    }
+    }*/
 
     displayPanel() {
         this.view.options.selectedIndex = ["fixed", "first-person", "third-person", "top"].indexOf(this.activeViewCamera.view);
@@ -1106,38 +1106,66 @@ export default class ThumbRaiser {
         }
     }
 
-    addMenuInfo() {
-        let roomInfo = null;
-        console.log(this.selectedBed.name);
+    async addMenuInfo() {
+        if (!this.selectedBed || !this.selectedBed.name) {
+            console.log('No bed selected or bed has no name.');
+            return;
+        }
 
-        switch (this.selectedBed.name) {
-            case 'hospitalBed_1':
-                roomInfo = 1;
-                break;
-            case 'hospitalBed_2':
-                roomInfo = 2;
-                break;
-            case 'hospitalBed_3':
-                roomInfo = 3;
-                break;
-            case 'hospitalBed_4':
-                roomInfo = 4;
-                break;
-            case 'hospitalBed_5':
-                roomInfo = 5;
-                break;
-            case 'hospitalBed_6':
-                roomInfo = 6;
-                break;
-            default:
-                console.log('Unknown bed:', this.selectedBed.name);
-                return;
+        const bedMapping = {
+            'hospitalBed_1': 1,
+            'hospitalBed_2': 2,
+            'hospitalBed_3': 3,
+            'hospitalBed_4': 4,
+            'hospitalBed_5': 5,
+            'hospitalBed_6': 6
+        };
 
-            let id = roomInfo;
-            const api = new BackEndConnection();
-            api.getRoomData(id);
+        const id = bedMapping[this.selectedBed.name];
+
+        if (!id) {
+            console.log('Unknown bed:', this.selectedBed.name);
+            return;
+        }
+
+        const api = new BackEndConnection();
+        console.log("Buscando dados da sala com ID: ", id);
 
 
+
+            try {
+                // Espera pela resposta da função getRoomData
+                console.log("bed: " + id);
+                const roomData = await api.getRoomData(id);
+
+                console.log("data: " + roomData);
+
+                // Verifica se os dados da sala são válidos
+                if (!roomData || !roomData.id) {
+                    console.log('Failed to fetch valid room data.');
+                    return;
+                }
+
+                // Exibe os dados no overlay
+                const overlay = document.getElementById("roomInfoOverlay");
+                if (overlay) {
+                    const maintenceSlots = roomData.maintenceSlots || "N/A";
+                    const assignedEquipment = roomData.assignedEquipment || "N/A";
+
+                    overlay.innerHTML = `
+                <h3>Room Information</h3>
+                <p><strong>Name:</strong> ${this.selectedBed.name}</p>
+                <p><strong>ID:</strong> ${roomData.id || "N/A"}</p>
+                <p><strong>Status:</strong> ${roomData.currentStatus || "Unknown"}</p>
+                <p><strong>Type:</strong> ${roomData.type || "Undefined"}</p>
+                <p><strong>Capacity:</strong> ${roomData.capacity || "N/A"}</p>
+                <p><strong>Maintenance Slots:</strong> ${maintenceSlots}</p>
+                <p><strong>Assigned Equipment:</strong> ${assignedEquipment}</p>
+            `;
+                    overlay.style.display = "block";
+                }
+        } catch (error) {
+            console.error('Error fetching room data:', error);
         }
     }
 }
