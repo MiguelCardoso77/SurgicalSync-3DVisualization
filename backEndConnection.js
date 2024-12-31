@@ -26,8 +26,6 @@ class BackEndConnection {
 
     async getRoomData(id) {
         try {
-            console.log("Início de getRoomData, ID: " + id);
-
             if (!id) {
                 throw new Error("Room ID is required.");
             }
@@ -48,8 +46,6 @@ class BackEndConnection {
                 console.log("Room data not found.");
                 return null;
             }
-
-            console.log("Room Data:", roomData);
 
             return {
                 id: roomData.roomNumber || null,
