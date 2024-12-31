@@ -1132,38 +1132,40 @@ export default class ThumbRaiser {
         console.log("Buscando dados da sala com ID: ", id);
 
 
+        try {
+            // Espera pela resposta da função getRoomData
+            console.log("bed: " + id);
+            api.getRoomData(id).then((status) => {
 
-            try {
-                // Espera pela resposta da função getRoomData
-                console.log("bed: " + id);
-                const roomData = await api.getRoomData(id);
+                console.log("id: " + roomData.id);
+                console.log("id: " + roomData.maintenanceSlots);
+                console.log("id: " + roomData.capacity);
+                console.log("id: " + roomData.assignedEquipment);
+                console.log("id: " + roomData.currentStatus);
 
-                console.log("data: " + roomData);
+
 
                 // Verifica se os dados da sala são válidos
                 if (!roomData || !roomData.id) {
                     console.log('Failed to fetch valid room data.');
                     return;
                 }
+                const maintenceSlots = roomData.maintenceSlots || "N/A";
+                const assignedEquipment = roomData.assignedEquipment || "N/A";
 
-                // Exibe os dados no overlay
-                const overlay = document.getElementById("roomInfoOverlay");
-                if (overlay) {
-                    const maintenceSlots = roomData.maintenceSlots || "N/A";
-                    const assignedEquipment = roomData.assignedEquipment || "N/A";
-
-                    overlay.innerHTML = `
+                overlay.innerHTML = `
                 <h3>Room Information</h3>
                 <p><strong>Name:</strong> ${this.selectedBed.name}</p>
                 <p><strong>ID:</strong> ${roomData.id || "N/A"}</p>
                 <p><strong>Status:</strong> ${roomData.currentStatus || "Unknown"}</p>
                 <p><strong>Type:</strong> ${roomData.type || "Undefined"}</p>
                 <p><strong>Capacity:</strong> ${roomData.capacity || "N/A"}</p>
-                <p><strong>Maintenance Slots:</strong> ${maintenceSlots}</p>
-                <p><strong>Assigned Equipment:</strong> ${assignedEquipment}</p>
+                <p><strong>Maintenance Slots:</strong> ${roomData.maintenanceSlots}</p>
+                <p><strong>Assigned Equipment:</strong> ${roomData.assignedEquipment}</p>
             `;
-                    overlay.style.display = "block";
-                }
+                overlay.style.display = "block";
+
+            })
         } catch (error) {
             console.error('Error fetching room data:', error);
         }
