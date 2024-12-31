@@ -1,11 +1,13 @@
 class BackEndConnection {
+   token = "ICcTTh51IzOiBKmftT1SnrBH5d42";
 
    async checkSurgeryRoomsStatus() {
         try {
             const response = await axios.get('https://surgicalsyncbackend.azurewebsites.net/api/surgeryRooms', {
                 method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': this.token
                 }
             });
 
@@ -30,32 +32,25 @@ class BackEndConnection {
                 throw new Error("Room ID is required.");
             }
 
-            const token = "ICcTTh51IzOiBKmftT1SnrBH5d42";
-
-            // Faz a requisição para a API com o cabeçalho Authorization
             const response = await axios.get(`https://surgicalsyncbackend.azurewebsites.net/api/surgeryRooms/${id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': token
+                    'Authorization': this.token
                 }
             })
 
-            // Exibe a resposta para verificar a estrutura
-            console.log("Resposta da API:", response.data);
+            console.log(response);
 
-            // Verifique se a resposta contém dados
             const roomData = response.data;
 
             if (!roomData || Object.keys(roomData).length === 0) {
-                console.log("Dados da sala não encontrados ou resposta vazia.");
+                console.log("Room data not found.");
                 return null;
             }
 
-            // Exibe os dados da sala para depuração
             console.log("Room Data:", roomData);
 
-            // Retorna os dados, garantindo que as propriedades existam
             return {
                 id: roomData.roomNumber || null,
                 maintenceSlots: roomData.maintenceSlots || [],
@@ -65,13 +60,11 @@ class BackEndConnection {
                 type: roomData.type || "Undefined"
             };
         } catch (error) {
-            // Trata e exibe erros detalhados
             console.error("Failed to fetch surgery room data:", error.message);
             return null;
         }
     }
 
-// Função para alternar a visibilidade do overlay
 toggleRoomInfoOverlay() {
     const overlay = document.getElementById("roomInfoOverlay");
     if (overlay) {
