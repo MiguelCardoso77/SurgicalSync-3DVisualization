@@ -1181,11 +1181,11 @@ export default class ThumbRaiser {
                         </tr>
                         <tr>
                             <td><strong>Maintenance Slots:</strong></td>
-                            <td>${data.maintenanceSlots ? data.maintenanceSlots.join(', ') : "N/A"}</td>
+                            <td>${data.maintenanceSlots || "N/A"}</td>
                         </tr>
                         <tr>
                             <td><strong>Assigned Equipment:</strong></td>
-                            <td>${data.assignedEquipment ? data.assignedEquipment.join(', ') : "N/A"}</td>
+                            <td>${data.assignedEquipment || "N/A"}</td>
                         </tr>
                     </tbody>
                 </table>
