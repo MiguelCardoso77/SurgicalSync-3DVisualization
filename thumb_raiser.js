@@ -1253,7 +1253,7 @@ export default class ThumbRaiser {
                 </tr>
                 <tr>
                     <td><strong>Type:</strong></td>
-                    <td>${data.type || "Undefined"}</td>
+                    <td>${data.type.toString() || "Undefined"}</td>
                 </tr>
                 <tr>
                     <td><strong>Capacity:</strong></td>
