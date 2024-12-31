@@ -1147,7 +1147,6 @@ export default class ThumbRaiser {
                 const overlay = document.getElementById('roomInfoOverlay');
 
                 // Adicionando o CSS dinamicamente ao documento
-                // Adicionando o CSS dinamicamente ao documento
                 const style = document.createElement('style');
                 style.innerHTML = `
     /* Estilizando o overlay */
@@ -1156,42 +1155,47 @@ export default class ThumbRaiser {
         position: fixed; /* Fica fixo na tela */
         top: 10px; /* Alinha 10px abaixo do topo */
         left: 10px; /* Alinha 10px à esquerda */
-        width: 300px; /* Largura fixa para o overlay */
+        width: 320px; /* Largura fixa para o overlay */
         background-color: rgba(0, 0, 0, 0.7); /* Fundo escuro semi-transparente */
-        color: white; /* Texto branco */
+        color: black; /* Texto preto */
         padding: 10px; /* Espaçamento interno */
         border-radius: 10px; /* Bordas arredondadas */
         z-index: 1000; /* Garante que o overlay fique sobre outros conteúdos */
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra suave */
         max-height: 80vh; /* Altura máxima para evitar que ocupe a tela toda */
         overflow-y: auto; /* Permite rolagem caso o conteúdo seja muito grande */
+        font-size: 14px; /* Reduz o tamanho da fonte para caber melhor o texto */
     }
 
     /* Estilizando a tabela */
     #roomInfoOverlay table {
         width: 100%; /* Tabela ocupa toda a largura disponível */
         border-collapse: collapse; /* Mescla as bordas */
+        font-size: 14px; /* Ajuste o tamanho da fonte para não ser muito grande */
     }
 
     #roomInfoOverlay th, #roomInfoOverlay td {
         padding: 8px 12px; /* Espaçamento interno das células */
         text-align: left; /* Alinha o texto à esquerda */
+        word-wrap: break-word; /* Quebra palavras longas para caber */
     }
 
     #roomInfoOverlay th {
-        background-color: #4CAF50; /* Cor de fundo das células de título */
+        background-color: #9C27B0; /* Cor de fundo roxa clara */
         color: white; /* Texto branco nas células de título */
+        font-weight: bold; /* Negrito no texto */
     }
 
     #roomInfoOverlay td {
-        background-color: #f9f9f9; /* Cor de fundo das células de conteúdo */
+        background-color: #ffffff; /* Fundo branco nas células de conteúdo */
+        color: black; /* Texto preto */
     }
 
     #roomInfoOverlay td:first-child {
         font-weight: bold; /* Negrito na primeira coluna */
     }
 
-    /* Melhorando o efeito do botão de fechar (opcional) */
+    /* Centralizando o botão de fechar */
     #closeOverlayButton {
         background-color: #f44336; /* Cor de fundo vermelha */
         color: white; /* Texto branco */
@@ -1200,6 +1204,10 @@ export default class ThumbRaiser {
         cursor: pointer;
         border-radius: 5px;
         margin-top: 10px;
+        display: block;
+        width: 50%;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     #closeOverlayButton:hover {
@@ -1217,7 +1225,7 @@ export default class ThumbRaiser {
         <table border="1">
             <thead>
                 <tr>
-                    <th>Property</th>
+                    <th>Info</th>
                     <th>Value</th>
                 </tr>
             </thead>
