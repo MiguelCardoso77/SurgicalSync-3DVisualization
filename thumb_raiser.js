@@ -1145,7 +1145,13 @@ export default class ThumbRaiser {
                 console.log("currentStatus: " + (data.currentStatus || "Unknown"));
 
                 // Obtém o elemento de overlay
-                const overlay = document.getElementById("roomInfoOverlay");
+                document.getElementById('roomName').textContent = this.selectedBed?.name || "N/A";
+                document.getElementById('roomId').textContent = id || "N/A";
+                document.getElementById('roomStatus').textContent = data.currentStatus || "Unknown";
+                document.getElementById('roomType').textContent = data.type || "Undefined";
+                document.getElementById('roomCapacity').textContent = data.capacity || "N/A";
+                document.getElementById('roomMaintenanceSlots').textContent = data.maintenanceSlots ? data.maintenanceSlots.join(', ') : "N/A";
+                document.getElementById('roomAssignedEquipment').textContent = data.assignedEquipment ? data.assignedEquipment.join(', ') : "N/A";
 
                 if (overlay) {
                     overlay.innerHTML = `
@@ -1159,7 +1165,7 @@ export default class ThumbRaiser {
         <p><strong>Assigned Equipment:</strong> ${data.assignedEquipment || "N/A"}</p>
     `;
                     overlay.style.display = "block";  // Exibe o overlay
-                
+
                 } else {
                     console.error("Overlay element with id 'roomInfoOverlay' not found.");
                 }
