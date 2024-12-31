@@ -40,22 +40,21 @@ class BackEndConnection {
                 }
             })
 
-            console.log("room " + response);
+            console.log("room maintenanceSlots " + response.data.maintenanceSlots);
 
-            const roomData = response.data;
 
-            if (!roomData || Object.keys(roomData).length === 0) {
+            if (! response.data || Object.keys( response.data).length === 0) {
                 console.log("Room data not found.");
                 return null;
             }
 
             return {
-                id: roomData.roomNumber || null,
-                maintenanceSlots: roomData.maintenanceSlots || [],
-                currentStatus: roomData.currentStatus || "Unknown",
-                assignedEquipment: roomData.assignedEquipment || [],
-                capacity: roomData.capacity || 0,
-                type: roomData.type || "Undefined"
+                id: response.data.id || null,
+                maintenanceSlots:  response.data.maintenanceSlots || [],
+                currentStatus:  response.data.currentStatus || "Unknown",
+                assignedEquipment:  response.data.assignedEquipment || [],
+                capacity:  response.data.capacity || 0,
+                type:  response.data.type || "Undefined"
             };
         } catch (error) {
             console.error("Failed to fetch surgery room data:", error.message);
