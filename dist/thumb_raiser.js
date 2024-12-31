@@ -1134,36 +1134,43 @@ export default class ThumbRaiser {
 
         try {
             console.log("bed: " + id);
+
             api.getRoomData(id).then((surgeryRoom) => {
-            const data = surgeryRoom
+                const data = surgeryRoom || {}; // Garante que 'data' sempre será um objeto.
 
                 console.log("id: " + id);
-                console.log("maintenanceSlots: " + data.maintenanceSlots  || "N/A");
-                console.log("capacity: " + data.capacity);
-                console.log("assignedEquipment: " + data.assignedEquipment|| "N/A");
-                console.log("currentStatus: " + data.currentStatus);
+                console.log("maintenanceSlots: " + (data.maintenanceSlots || "N/A"));
+                console.log("capacity: " + (data.capacity || "N/A"));
+                console.log("assignedEquipment: " + (data.assignedEquipment || "N/A"));
+                console.log("currentStatus: " + (data.currentStatus || "Unknown"));
 
-                /*if (!data || !data.id) {
-                    console.log('Failed to fetch valid room data.');
-                    return;
-                }*/
+                // Obtém o elemento de overlay
+                const overlay = document.getElementById("roomInfoOverlay");
 
-
-                overlay.innerHTML = `
-                <h3>Room Information</h3>
-                <p><strong>Name:</strong> ${this.selectedBed.name}</p>
-                <p><strong>ID:</strong> ${id || "N/A"}</p>
-                <p><strong>Status:</strong> ${data.currentStatus || "Unknown"}</p>
-                <p><strong>Type:</strong> ${data.type || "Undefined"}</p>
-                <p><strong>Capacity:</strong> ${data.capacity || "N/A"}</p>
-                <p><strong>Maintenance Slots:</strong> ${data.maintenanceSlots|| "N/A"}</p>
-                <p><strong>Assigned Equipment:</strong> ${data.assignedEquipment || "N/A"}</p>
-            `;
-                overlay.style.display = "block";
-
-            })
+                if (overlay) {
+                    overlay.innerHTML = `
+        <h3>Room Information</h3>
+        <p><strong>Name:</strong> ${this.selectedBed?.name || "N/A"}</p>
+        <p><strong>ID:</strong> ${id || "N/A"}</p>
+        <p><strong>Status:</strong> ${data.currentStatus || "Unknown"}</p>
+        <p><strong>Type:</strong> ${data.type || "Undefined"}</p>
+        <p><strong>Capacity:</strong> ${data.capacity || "N/A"}</p>
+        <p><strong>Maintenance Slots:</strong> ${data.maintenanceSlots || "N/A"}</p>
+        <p><strong>Assigned Equipment:</strong> ${data.assignedEquipment || "N/A"}</p>
+    `;
+                    overlay.style.display = "block";  // Exibe o overlay
+                
+                } else {
+                    console.error("Overlay element with id 'roomInfoOverlay' not found.");
+                }
+            }).catch((error) => {
+                console.error("Failed to fetch room data:", error);
+            });
         } catch (error) {
+            console.error("An unexpected error occurred:", error);
+        }
+
+    } catch (error) {
             console.error('Error fetching room data:', error);
         }
-    }
 }
