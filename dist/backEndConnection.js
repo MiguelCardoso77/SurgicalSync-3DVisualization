@@ -30,6 +30,8 @@ class BackEndConnection {
                 throw new Error("Room ID is required.");
             }
 
+            console.log("room id " + id);
+
             const response = await axios.get(`https://surgicalsyncbackend.azurewebsites.net/api/surgeryRooms/${id}`, {
                 method: 'GET',
                 headers: {
@@ -38,7 +40,7 @@ class BackEndConnection {
                 }
             })
 
-            console.log(response);
+            console.log("room " + response);
 
             const roomData = response.data;
 
@@ -49,7 +51,7 @@ class BackEndConnection {
 
             return {
                 id: roomData.roomNumber || null,
-                maintenceSlots: roomData.maintenceSlots || [],
+                maintenanceSlots: roomData.maintenanceSlots || [],
                 currentStatus: roomData.currentStatus || "Unknown",
                 assignedEquipment: roomData.assignedEquipment || [],
                 capacity: roomData.capacity || 0,
