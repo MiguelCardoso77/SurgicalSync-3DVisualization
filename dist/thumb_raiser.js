@@ -1139,27 +1139,26 @@ export default class ThumbRaiser {
             const data = surgeryRoom
 
                 console.log("id: " + data.id);
-                console.log("maintenanceSlots: " + data.maintenanceSlots);
+                console.log("maintenanceSlots: " + data.maintenanceSlots  || "N/A");
                 console.log("capacity: " + data.capacity);
-                console.log("assignedEquipment: " + data.assignedEquipment);
+                console.log("assignedEquipment: " + data.assignedEquipment|| "N/A");
                 console.log("currentStatus: " + data.currentStatus);
 
-                if (!roomData || !roomData.id) {
+                if (!data || !data.id) {
                     console.log('Failed to fetch valid room data.');
                     return;
                 }
-                const maintenceSlots = roomData.maintenceSlots || "N/A";
-                const assignedEquipment = roomData.assignedEquipment || "N/A";
+
 
                 overlay.innerHTML = `
                 <h3>Room Information</h3>
                 <p><strong>Name:</strong> ${this.selectedBed.name}</p>
-                <p><strong>ID:</strong> ${roomData.id || "N/A"}</p>
-                <p><strong>Status:</strong> ${roomData.currentStatus || "Unknown"}</p>
-                <p><strong>Type:</strong> ${roomData.type || "Undefined"}</p>
-                <p><strong>Capacity:</strong> ${roomData.capacity || "N/A"}</p>
-                <p><strong>Maintenance Slots:</strong> ${roomData.maintenanceSlots}</p>
-                <p><strong>Assigned Equipment:</strong> ${roomData.assignedEquipment}</p>
+                <p><strong>ID:</strong> ${data.id || "N/A"}</p>
+                <p><strong>Status:</strong> ${data.currentStatus || "Unknown"}</p>
+                <p><strong>Type:</strong> ${data.type || "Undefined"}</p>
+                <p><strong>Capacity:</strong> ${data.capacity || "N/A"}</p>
+                <p><strong>Maintenance Slots:</strong> ${data.maintenanceSlots|| "N/A"}</p>
+                <p><strong>Assigned Equipment:</strong> ${data.assignedEquipment || "N/A"}</p>
             `;
                 overlay.style.display = "block";
 
