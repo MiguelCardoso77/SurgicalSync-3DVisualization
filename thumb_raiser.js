@@ -1147,6 +1147,7 @@ export default class ThumbRaiser {
                 const overlay = document.getElementById('roomInfoOverlay');
 
                 // Adicionando o CSS dinamicamente ao documento
+                // Adicionando o CSS dinamicamente ao documento
                 const style = document.createElement('style');
                 style.innerHTML = `
     /* Estilizando o overlay */
@@ -1193,6 +1194,14 @@ export default class ThumbRaiser {
 
     #roomInfoOverlay td:first-child {
         font-weight: bold; /* Negrito na primeira coluna */
+    }
+
+    /* Estilo para o título da tabela (h3) */
+    #roomInfoOverlay h3 {
+        color: white; /* Texto branco */
+        text-align: center; /* Centraliza o título */
+        font-size: 18px; /* Ajuste o tamanho da fonte */
+        margin-bottom: 10px; /* Espaçamento abaixo do título */
     }
 
     /* Centralizando o botão de fechar */
