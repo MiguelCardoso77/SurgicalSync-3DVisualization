@@ -1133,27 +1133,26 @@ export default class ThumbRaiser {
 
 
         try {
-            // Espera pela resposta da função getRoomData
             console.log("bed: " + id);
             api.getRoomData(id).then((surgeryRoom) => {
             const data = surgeryRoom
 
-                console.log("id: " + data.id);
+                console.log("id: " + id);
                 console.log("maintenanceSlots: " + data.maintenanceSlots  || "N/A");
                 console.log("capacity: " + data.capacity);
                 console.log("assignedEquipment: " + data.assignedEquipment|| "N/A");
                 console.log("currentStatus: " + data.currentStatus);
 
-                if (!data || !data.id) {
+                /*if (!data || !data.id) {
                     console.log('Failed to fetch valid room data.');
                     return;
-                }
+                }*/
 
 
                 overlay.innerHTML = `
                 <h3>Room Information</h3>
                 <p><strong>Name:</strong> ${this.selectedBed.name}</p>
-                <p><strong>ID:</strong> ${data.id || "N/A"}</p>
+                <p><strong>ID:</strong> ${id || "N/A"}</p>
                 <p><strong>Status:</strong> ${data.currentStatus || "Unknown"}</p>
                 <p><strong>Type:</strong> ${data.type || "Undefined"}</p>
                 <p><strong>Capacity:</strong> ${data.capacity || "N/A"}</p>
