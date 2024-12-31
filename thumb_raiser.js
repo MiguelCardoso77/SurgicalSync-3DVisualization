@@ -1146,57 +1146,124 @@ export default class ThumbRaiser {
 
                 const overlay = document.getElementById('roomInfoOverlay');
 
+                // Adicionando o CSS dinamicamente ao documento
+                // Adicionando o CSS dinamicamente ao documento
+                const style = document.createElement('style');
+                style.innerHTML = `
+    /* Estilizando o overlay */
+    #roomInfoOverlay {
+        display: none; /* Inicialmente escondido */
+        position: fixed; /* Fica fixo na tela */
+        top: 10px; /* Alinha 10px abaixo do topo */
+        left: 10px; /* Alinha 10px à esquerda */
+        width: 300px; /* Largura fixa para o overlay */
+        background-color: rgba(0, 0, 0, 0.7); /* Fundo escuro semi-transparente */
+        color: white; /* Texto branco */
+        padding: 10px; /* Espaçamento interno */
+        border-radius: 10px; /* Bordas arredondadas */
+        z-index: 1000; /* Garante que o overlay fique sobre outros conteúdos */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra suave */
+        max-height: 80vh; /* Altura máxima para evitar que ocupe a tela toda */
+        overflow-y: auto; /* Permite rolagem caso o conteúdo seja muito grande */
+    }
 
+    /* Estilizando a tabela */
+    #roomInfoOverlay table {
+        width: 100%; /* Tabela ocupa toda a largura disponível */
+        border-collapse: collapse; /* Mescla as bordas */
+    }
+
+    #roomInfoOverlay th, #roomInfoOverlay td {
+        padding: 8px 12px; /* Espaçamento interno das células */
+        text-align: left; /* Alinha o texto à esquerda */
+    }
+
+    #roomInfoOverlay th {
+        background-color: #4CAF50; /* Cor de fundo das células de título */
+        color: white; /* Texto branco nas células de título */
+    }
+
+    #roomInfoOverlay td {
+        background-color: #f9f9f9; /* Cor de fundo das células de conteúdo */
+    }
+
+    #roomInfoOverlay td:first-child {
+        font-weight: bold; /* Negrito na primeira coluna */
+    }
+
+    /* Melhorando o efeito do botão de fechar (opcional) */
+    #closeOverlayButton {
+        background-color: #f44336; /* Cor de fundo vermelha */
+        color: white; /* Texto branco */
+        border: none;
+        padding: 8px 16px;
+        cursor: pointer;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
+
+    #closeOverlayButton:hover {
+        background-color: #d32f2f; /* Efeito de hover */
+    }
+`;
+
+// Adiciona o estilo ao head do documento
+                document.head.appendChild(style);
+
+// Seu código JavaScript para o overlay e tabela
                 if (overlay) {
-                    // Cria o conteúdo da tabela dinamicamente
                     const tableContent = `
-                <h3>Room Information</h3>
-                <table border="1">
-                    <thead>
-                        <tr>
-                            <th>Property</th>
-                            <th>Value</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Name:</strong></td>
-                            <td>${this.selectedBed?.name || "N/A"}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>ID:</strong></td>
-                            <td>${id || "N/A"}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Status:</strong></td>
-                            <td>${data.currentStatus || "Unknown"}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Type:</strong></td>
-                            <td>${data.type || "Undefined"}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Capacity:</strong></td>
-                            <td>${data.capacity || "N/A"}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Maintenance Slots:</strong></td>
-                            <td>${data.maintenanceSlots || "N/A"}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Assigned Equipment:</strong></td>
-                            <td>${data.assignedEquipment || "N/A"}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            `;
+        <h3>Room Information</h3>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Name:</strong></td>
+                    <td>${this.selectedBed?.name || "N/A"}</td>
+                </tr>
+                <tr>
+                    <td><strong>ID:</strong></td>
+                    <td>${id || "N/A"}</td>
+                </tr>
+                <tr>
+                    <td><strong>Status:</strong></td>
+                    <td>${data.currentStatus || "Unknown"}</td>
+                </tr>
+                <tr>
+                    <td><strong>Type:</strong></td>
+                    <td>${data.type || "Undefined"}</td>
+                </tr>
+                <tr>
+                    <td><strong>Capacity:</strong></td>
+                    <td>${data.capacity || "N/A"}</td>
+                </tr>
+                <tr>
+                    <td><strong>Maintenance Slots:</strong></td>
+                    <td>${data.maintenanceSlots || "N/A"}</td>
+                </tr>
+                <tr>
+                    <td><strong>Assigned Equipment:</strong></td>
+                    <td>${data.assignedEquipment || "N/A"}</td>
+                </tr>
+            </tbody>
+        </table>
+        <button id="closeOverlayButton">Close</button> <!-- Botão de fechar -->
+    `;
 
-                    // Substitui o conteúdo do overlay com o conteúdo da tabela
                     overlay.innerHTML = tableContent;
-
                     overlay.style.display = "block";  // Exibe o overlay
 
-                } else {
+                    // Adiciona evento para fechar o overlay
+                    document.getElementById("closeOverlayButton").addEventListener("click", () => {
+                        overlay.style.display = "none";  // Esconde o overlay
+                    });
+                }
+                 else {
                     console.error("Overlay element with id 'roomInfoOverlay' not found.");
                 }
             }).catch((error) => {
