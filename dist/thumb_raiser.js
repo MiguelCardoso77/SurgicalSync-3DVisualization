@@ -1139,31 +1139,61 @@ export default class ThumbRaiser {
                 const data = surgeryRoom || {}; // Garante que 'data' sempre será um objeto.
 
                 console.log("id: " + id);
-                console.log("maintenanceSlots: " + (data.maintenanceSlots || "N/A"));
-                console.log("capacity: " + (data.capacity || "N/A"));
-                console.log("assignedEquipment: " + (data.assignedEquipment || "N/A"));
+                console.log("maintenanceSlots: " + (data.maintenanceSlots || "------"));
+                console.log("capacity: " + (data.capacity || "------"));
+                console.log("assignedEquipment: " + (data.assignedEquipment || "------"));
                 console.log("currentStatus: " + (data.currentStatus || "Unknown"));
 
-                // Obtém o elemento de overlay
-                document.getElementById('roomName').textContent = this.selectedBed?.name || "N/A";
-                document.getElementById('roomId').textContent = id || "N/A";
-                document.getElementById('roomStatus').textContent = data.currentStatus || "Unknown";
-                document.getElementById('roomType').textContent = data.type || "Undefined";
-                document.getElementById('roomCapacity').textContent = data.capacity || "N/A";
-                document.getElementById('roomMaintenanceSlots').textContent = data.maintenanceSlots ? data.maintenanceSlots.join(', ') : "N/A";
-                document.getElementById('roomAssignedEquipment').textContent = data.assignedEquipment ? data.assignedEquipment.join(', ') : "N/A";
+                const overlay = document.getElementById('roomInfoOverlay');
+
 
                 if (overlay) {
-                    overlay.innerHTML = `
-        <h3>Room Information</h3>
-        <p><strong>Name:</strong> ${this.selectedBed?.name || "N/A"}</p>
-        <p><strong>ID:</strong> ${id || "N/A"}</p>
-        <p><strong>Status:</strong> ${data.currentStatus || "Unknown"}</p>
-        <p><strong>Type:</strong> ${data.type || "Undefined"}</p>
-        <p><strong>Capacity:</strong> ${data.capacity || "N/A"}</p>
-        <p><strong>Maintenance Slots:</strong> ${data.maintenanceSlots || "N/A"}</p>
-        <p><strong>Assigned Equipment:</strong> ${data.assignedEquipment || "N/A"}</p>
-    `;
+                    // Cria o conteúdo da tabela dinamicamente
+                    const tableContent = `
+                <h3>Room Information</h3>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>Property</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Name:</strong></td>
+                            <td>${this.selectedBed?.name || "N/A"}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ID:</strong></td>
+                            <td>${id || "N/A"}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Status:</strong></td>
+                            <td>${data.currentStatus || "Unknown"}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Type:</strong></td>
+                            <td>${data.type || "Undefined"}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Capacity:</strong></td>
+                            <td>${data.capacity || "N/A"}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Maintenance Slots:</strong></td>
+                            <td>${data.maintenanceSlots ? data.maintenanceSlots.join(', ') : "N/A"}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Assigned Equipment:</strong></td>
+                            <td>${data.assignedEquipment ? data.assignedEquipment.join(', ') : "N/A"}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+
+                    // Substitui o conteúdo do overlay com o conteúdo da tabela
+                    overlay.innerHTML = tableContent;
+
                     overlay.style.display = "block";  // Exibe o overlay
 
                 } else {
