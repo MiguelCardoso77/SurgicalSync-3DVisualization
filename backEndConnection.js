@@ -40,7 +40,7 @@ class BackEndConnection {
                 }
             })
 
-            console.log("room maintenanceSlots " + response.data.maintenanceSlots);
+            console.log("room maintenanceSlots " + response.data + "test");
 
 
             if (! response.data || Object.keys( response.data).length === 0) {
