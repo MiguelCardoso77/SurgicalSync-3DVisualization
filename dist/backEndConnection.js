@@ -1,9 +1,9 @@
 class BackEndConnection {
    token = "ICcTTh51IzOiBKmftT1SnrBH5d42";
 
-   async checkSurgeryRoomsStatus() {
+    async checkSurgeryRoomsStatus() {
         try {
-            const response = await axios.get('https://surgicalsyncbackend.azurewebsites.net/api/surgeryRooms', {
+            const response = await axios.get('https://surgicalsyncbackend-bjg4hjdgbugaetcs.spaincentral-01.azurewebsites.net/api/surgeryRooms', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -23,7 +23,6 @@ class BackEndConnection {
         }
     }
 
-
     async getRoomData(id) {
         try {
             if (!id) {
@@ -32,7 +31,7 @@ class BackEndConnection {
 
             console.log("room id " + id);
 
-            const response = await axios.get(`https://surgicalsyncbackend.azurewebsites.net/api/surgeryRooms/${id}`, {
+            const response = await axios.get(`https://surgicalsyncbackend-bjg4hjdgbugaetcs.spaincentral-01.azurewebsites.net/api/surgeryRooms/${id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -61,13 +60,6 @@ class BackEndConnection {
             return null;
         }
     }
-
-toggleRoomInfoOverlay() {
-    const overlay = document.getElementById("roomInfoOverlay");
-    if (overlay) {
-        overlay.style.display = overlay.style.display === "block" ? "none" : "block";
-    }
-}
 }
 
 export default BackEndConnection;
